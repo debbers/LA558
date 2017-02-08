@@ -55,7 +55,8 @@
 			<img src="img/sidney.jpg"/>
 		</div>
 	</div>
-	<h1>Moment.js object in the console</h1>
+	<h1>Countdown to Vacation</h1>
+	<p>My next vacation is in: <span id="countdown"></span></p>
 	
 	
 </section>
@@ -101,8 +102,9 @@
 				}
 			}
 		});
-		var weekFromToday = moment().add(7, 'days');
-		console.log(weekFromToday);
+		var dateA = moment('2017-03-09');
+		console.log(dateA.fromNow());
+		$("#countdown").html(dateA.fromNow());
 	});
 </script>
 </html>
