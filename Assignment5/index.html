@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="description" content="Assignment 5">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <!-- External css file from http://getbootstrap.com -->
+  <link rel="stylesheet" type="text/css" href="../classes/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/assignment.css">
+  <!-- External js file from http://jquery.com -->
+  <script type="text/javascript" src="../classes/jquery/jquery-3.1.1.min.js"></script>
+  <title>Assignment 5</title>
+</head>
+<body>
+<header role="banner">
+	<nav role="navigation">
+		<p>Debbie Brasier <em>Assignment 5</em></p>
+	</nav>
+</header>
+<section>
+	<h1>A set of radio buttons</h1>
+	<label>What kind of ice cream do you like best?</label>
+	<div class="row">
+		<div class="col-md-3">
+			<form>
+				<div class="form-group">
+					<div class="radio">
+						<label>
+							<input type="radio" name="radIceCream" value="vanilla">Vanilla
+						</label>
+					</div>
+					<div class="radio">
+						<label>
+							<input type="radio" name="radIceCream" value="chocolate">Chocolate
+						</label>
+					</div>
+					<div class="radio">
+						<label>
+							<input type="radio" name="radIceCream" value="strawberry">Strawberry
+						</label>
+					</div>
+					<div class="radio">
+						<label>
+							<input type="radio" name="radIceCream" value="other">Other
+						</label>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="col-md-9">
+			<div id="iceCreamFeedback"></div>
+		</div>
+	</div>
+	<h1>A set of checkboxes</h1>
+	<form>
+		<div class="form-group">
+			<label>What kind of toppings do you like on your ice cream?</label><br/>
+			<label class="checkbox-inline">
+				<input type="checkbox" id="sprinkles" value="sprinkles">Sprinkles
+			</label>
+			<label class="checkbox-inline">
+				<input type="checkbox" id="caramel" value="caramel">Caramel
+			</label>
+			<label class="checkbox-inline">
+				<input type="checkbox" id="hotFudge" value="hotFudge">Hot Fudge
+			</label>
+			<label class="checkbox-inline">
+				<input type="checkbox" id="whippedCream" value="whippedCream">Whipped Cream
+			</label>
+			<label class="checkbox-inline">
+				<input type="checkbox" id="cherryOnTop" value="cherryOnTop">Cherry on Top
+			</label>
+		</div>
+		<p class="text-muted">You like <span id="toppingCount">0 toppings</span>.</p>
+	</form>
+	<h1>A text input</h1><form>
+		<div class="form-group">
+			<label for="myLastName">Try to spell my last name correctly:</label>
+  		<input type="text" class="form-control" id="myLastName">
+		</div>
+	</form>
+	<h1>Embed a map on a page</h1>
+	<p>One of my favorite places to get ice cream. They will make you a fresh waffle cone!</p>
+	<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3126.680139119441!2d-122.82522268403171!3d38.402644179650096!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808430a70f900c0d%3A0xc92b6cae2b0c3023!2sScreamin&#39;+Mimi&#39;s!5e0!3m2!1sen!2sus!4v1486701460406" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+	<h2>Another Map for Fun</h2>
+</section>
+<footer>
+	Debbie Brasier | Assignment 5<br/>
+	LA 558 | Web Mapping 2017
+</footer>
+</body>
+<script>
+	$(document).ready(function() {
+    // Control for radio buttons
+		$(".radio input").click(function() {
+			var radIceCream = $('input[name=radIceCream]');
+			var faveIceCream = radIceCream.filter(':checked').val();
+			
+			switch(faveIceCream) {
+				case "vanilla":
+						$("#iceCreamFeedback").html("Mmmm. Plain and simple. Vanilla is a classic.");
+						break;
+				case "chocolate":
+						$("#iceCreamFeedback").html("Everyone deserves a chocolatey treat now and then.");
+						break;
+				case "strawberry":
+						$("#iceCreamFeedback").html("It brings back memories of childhood, doesn't it?");
+						break;
+				case "other":
+						$("#iceCreamFeedback").html("You're a creative type, aren't you?");
+						break;
+			}
+		});
+		
+		// Control for checkboxes
+		$(".checkbox-inline input").click(function() {
+			var toppingCounter = 0;
+			var toppingContent = "toppings";
+			
+			if ($("#sprinkles").is(":checked")) {
+				toppingCounter = toppingCounter + 1;
+			}
+			if ($("#caramel").is(":checked")) {
+				toppingCounter = toppingCounter + 1;
+			}
+			if ($("#hotFudge").is(":checked")) {
+				toppingCounter = toppingCounter + 1;
+			}
+			if ($("#whippedCream").is(":checked")) {
+				toppingCounter = toppingCounter + 1;
+			}
+			if ($("#cherryOnTop").is(":checked")) {
+				toppingCounter = toppingCounter + 1;
+			}
+			
+			if (toppingCounter == 1) {
+				toppingContent = "topping";
+			}
+			$("#toppingCount").html(toppingCounter + " " + toppingContent);
+		});
+		
+		// Control for text box
+		$("#myLastName").blur(function() {
+			var myLastName = $("#myLastName").val();
+			if (myLastName == "Brasier" || myLastName == "brasier") {
+				alert("You got it right!");
+			} else {
+				alert("Not quite... you might need to give it another shot.")
+			}
+		});
+	});
+</script>
+</html>
