@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="description" content="Assignment 7">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <!-- External css file from http://getbootstrap.com -->
+  <link rel="stylesheet" type="text/css" href="../classes/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/assignment.css">
+  <!-- External js file from http://jquery.com -->
+  <script type="text/javascript" src="../classes/jquery/jquery-3.1.1.min.js"></script>
+  <!-- External js file from fontawesome.io -->
+  <script src="https://use.fontawesome.com/9e00336128.js"></script>
+  <title>Assignment 7</title>
+</head>
+
+<body>
+  <header role="banner">
+    <nav role="navigation">
+      <p>Debbie Brasier <em>Assignment 7</em></p>
+    </nav>
+  </header>
+  <section>
+    <div class="row">
+      <div class="col-md-3 bg-light">
+        <h3>Map Layers</h3>
+        <form>
+          <div class="form-group">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" name="mapLayer" value="0"> Canoe Routes
+              </label>
+            </div>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" name="mapLayer" value="1"> Loess Hills
+              </label>
+            </div>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" name="mapLayer" value="2"> Wind Turbines
+              </label>
+            </div>
+          </div>
+          <hr/>
+          <div class="form-group">
+            <div class="radio">
+              <label>
+                <input type="radio" name="basemapType" value="landcover">Landcover
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                <input type="radio" name="basemapType" value="street" checked="checked">Street
+              </label>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="col-md-9">
+        <div class="map-center">
+          <h1 id="h1">Basemap</h1>
+          <div class="maps">
+            <img id="map0" src="img/canoeRoutes.png" />
+            <img id="map1" src="img/loessHills.png" />
+            <img id="map2" src="img/windTurbines.png" />
+            <img id="map3" src="img/basemapLandcover.png" />
+            <img id="map4" src="img/basemapStreets.png" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer>
+    Debbie Brasier | Assignment 7
+    <br/> LA 558 | Web Mapping 2017
+  </footer>
+</body>
+<script>
+  $(document).ready(function() {
+    //Initialize the basemap
+    $("#map4").show();
+    //Toggle the basemap layers
+    $('input:radio[name=basemapType]').click(function() {
+      basemapSelected = $('input:radio[name=basemapType]:checked').val();
+      //console.log(basemapSelected);
+      $("#map3, #map4").hide();
+      if (basemapSelected == "landcover") {
+        $("#map3").show();
+      } else {
+        $("#map4").show();
+      }
+    });
+    $("input:checkbox[name=mapLayer]").change(function() {
+      x = $(this).val();
+      console.log("toggled map" + x);
+      $("#map" + x).toggle().css("z-index", x);
+    });
+  });
+
+</script>
+
+</html>
