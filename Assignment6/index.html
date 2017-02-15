@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="description" content="Assignment 6">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <!-- External css file from http://getbootstrap.com -->
+  <link rel="stylesheet" type="text/css" href="../classes/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/assignment.css">
+  <!-- External js file from http://jquery.com -->
+  <script type="text/javascript" src="../classes/jquery/jquery-3.1.1.min.js"></script>
+  <!-- External js file from fontawesome.io -->
+  <script src="https://use.fontawesome.com/9e00336128.js"></script>
+  <title>Assignment 6</title>
+</head>
+
+<body>
+  <header role="banner">
+    <nav role="navigation">
+      <p>Debbie Brasier <em>Assignment 6</em></p>
+    </nav>
+  </header>
+  <section>
+    <h1>Example 1: element selector</h1>
+    <p>Paragraphs can be boring and hard to read.</p>
+    <p>Why not get rid of all paragraphs on this page? Try it by clicking the button.</p>
+    <button class="btn btn-primary" type="button">Remove paragraphs</button>
+    <hr/>
+    <h1>Example 2: #id selector</h1>
+    <div id="coolBox">
+      Hello, world!
+    </div>
+    <br/>
+    <a id="changeColors" class="btn btn-primary">Change colors</a>
+    <hr/>
+    <h1>Example 3: .class selector</h1>
+    <h2 class="subtitle">Subtitle to change goes here</h2>
+    <a class="btn btn-default">Change subtitle</a>
+    <hr/>
+    <h1>Example 4: #id selector</h1>
+    <h2>Click to rate my jQuery page.</h2>
+    <div>
+      <i class="fa fa-star-o fa-2x" id="star1"></i>
+      <i class="fa fa-star-o fa-2x" id="star2"></i>
+      <i class="fa fa-star-o fa-2x" id="star3"></i>
+      <i class="fa fa-star-o fa-2x" id="star4"></i>
+      <i class="fa fa-star-o fa-2x" id="star5"></i>
+    </div>
+  </section>
+  <footer>
+    Debbie Brasier | Assignment 6
+    <br/> LA 558 | Web Mapping 2017
+  </footer>
+</body>
+<script>
+  $(document).ready(function() {
+    // Control for example 1
+    $("button ").click(function() {
+      $("p ").hide();
+    });
+    // Control for example 2
+    $("#changeColors ").click(function() {
+      $("#coolBox ").css("background-color ", "#000 ").css("color ", "#CDDC39 ");
+    });
+    // Control for example 3
+    $(".btn-default ").click(function() {
+      $(".subtitle ").slideUp(500).slideDown(500).css("color ", "#9C27B0 ");
+    });
+    // Control for example 4
+    $("#star1 ").click(function() {
+      $("#star1 ").removeClass("fa-star-o ").addClass("fa-star ");
+      $("#star2 ").removeClass("fa-star ").addClass("fa-star-o ");
+      $("#star3 ").removeClass("fa-star ").addClass("fa-star-o ");
+      $("#star4 ").removeClass("fa-star ").addClass("fa-star-o ");
+      $("#star5 ").removeClass("fa-star ").addClass("fa-star-o ");
+    });
+    $("#star2 ").click(function() {
+      $("#star1 ").removeClass("fa-star-o ").addClass("fa-star ");
+      $("#star2 ").removeClass("fa-star-o ").addClass("fa-star ");
+      $("#star3 ").removeClass("fa-star ").addClass("fa-star-o ");
+      $("#star4 ").removeClass("fa-star ").addClass("fa-star-o ");
+      $("#star5 ").removeClass("fa-star ").addClass("fa-star-o ");
+    });
+    $("#star3 ").click(function() {
+      $("#star1 ").removeClass("fa-star-o ").addClass("fa-star ");
+      $("#star2 ").removeClass("fa-star-o ").addClass("fa-star ");
+      $("#star3 ").removeClass("fa-star-o ").addClass("fa-star ");
+      $("#star4 ").removeClass("fa-star ").addClass("fa-star-o ");
+      $("#star5 ").removeClass("fa-star ").addClass("fa-star-o ");
+    });
+    $("#star4 ").click(function() {
+      $("#star1 ").removeClass("fa-star-o ").addClass("fa-star ");
+      $("#star2 ").removeClass("fa-star-o ").addClass("fa-star ");
+      $("#star3 ").removeClass("fa-star-o ").addClass("fa-star ");
+      $("#star4 ").removeClass("fa-star-o ").addClass("fa-star ");
+      $("#star5 ").removeClass("fa-star ").addClass("fa-star-o ");
+    });
+    $("#star5 ").click(function() {
+      $("#star1 ").removeClass("fa-star-o ").addClass("fa-star ");
+      $("#star2 ").removeClass("fa-star-o ").addClass("fa-star ");
+      $("#star3 ").removeClass("fa-star-o ").addClass("fa-star ");
+      $("#star4 ").removeClass("fa-star-o ").addClass("fa-star ");
+      $("#star5 ").removeClass("fa-star-o ").addClass("fa-star ");
+    });
+  });
+
+</script>
+
+</html>

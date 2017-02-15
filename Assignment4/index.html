@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta name="description" content="Assignment 4">
+  <meta name="description" content="Assignment 4">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
   <!-- External css file from http://getbootstrap.com -->
@@ -15,97 +16,100 @@
   <script type="text/javascript" src="../classes/jquery/jquery-3.1.1.min.js"></script>
   <title>Assignment 4</title>
 </head>
+
 <body>
-<header role="banner">
-	<nav role="navigation">
-		<p>Debbie Brasier <em>Assignment 4</em></p>
-	</nav>
-</header>
-<section>
-	<h1>Cats!</h1>
-	<form>
-		<div class="form-group">
-			<label for="favoriteColor">Choose your favorite color:</label>
-			<input id="favoriteColor" class="jscolor" value="DEDEDE">
-		</div>
-		<div class="form-group">
-			<label for="favoriteCat">Choose your favorite cat:</label>
-			<select id="favoriteCat">
-				<option></option>
-				<option value="0">Midnight</option>
-				<option value="1">Sadie</option>
-				<option value="2">Sidney</option>
-			</select>
-			<p class="hidden-error" id="catError" style="display:none;">Choose a kitty!</p>
-		</div>
-		<a id="jsCatBtn" class="btn btn-primary">Submit</a>
-	</form>
-	<hr/>
-	<div class="row">
-		<div class="col-md-4 text-center" id="cat1">
-			<h2 id="cat1Name"></h2>
-			<img src="img/midnight.jpg"/>
-		</div>
-		<div class="col-md-4 text-center" id="cat2">
-			<h2 id="cat2Name"></h2>
-			<img src="img/sadie.jpg"/>
-		</div>
-		<div class="col-md-4 text-center" id="cat3">
-			<h2 id="cat3Name"></h2>
-			<img src="img/sidney.jpg"/>
-		</div>
-	</div>
-	<hr/>
-	<h1>Countdown to Vacation</h1>
-	<p>My next vacation is <strong><span id="countdown"></span></strong></p>
-	
-	
-</section>
-<footer>
-	Debbie Brasier | Assignment 4<br/>
-	LA 558 | Web Mapping 2017
-</footer>
+  <header role="banner">
+    <nav role="navigation">
+      <p>Debbie Brasier <em>Assignment 4</em></p>
+    </nav>
+  </header>
+  <section>
+    <h1>Cats!</h1>
+    <form>
+      <div class="form-group">
+        <label for="favoriteColor">Choose your favorite color:</label>
+        <input id="favoriteColor" class="jscolor" value="DEDEDE">
+      </div>
+      <div class="form-group">
+        <label for="favoriteCat">Choose your favorite cat:</label>
+        <select id="favoriteCat">
+          <option></option>
+          <option value="0">Midnight</option>
+          <option value="1">Sadie</option>
+          <option value="2">Sidney</option>
+        </select>
+        <p class="hidden-error" id="catError" style="display:none;">Choose a kitty!</p>
+      </div>
+      <a id="jsCatBtn" class="btn btn-primary">Submit</a>
+    </form>
+    <hr/>
+    <div class="row">
+      <div class="col-md-4 text-center" id="cat1">
+        <h2 id="cat1Name"></h2>
+        <img src="img/midnight.jpg" />
+      </div>
+      <div class="col-md-4 text-center" id="cat2">
+        <h2 id="cat2Name"></h2>
+        <img src="img/sadie.jpg" />
+      </div>
+      <div class="col-md-4 text-center" id="cat3">
+        <h2 id="cat3Name"></h2>
+        <img src="img/sidney.jpg" />
+      </div>
+    </div>
+    <hr/>
+    <h1>Countdown to Vacation</h1>
+    <p>My next vacation is <strong><span id="countdown"></span></strong></p>
+
+
+  </section>
+  <footer>
+    Debbie Brasier | Assignment 4
+    <br/> LA 558 | Web Mapping 2017
+  </footer>
 </body>
 <script>
-	$(document).ready(function() {
-    var cats = ["Midnight","Sadie","Sidney"];
-		$("#cat1Name").html(cats[0]);
-		$("#cat2Name").html(cats[1]);
-		$("#cat3Name").html(cats[2]);
-		
-		$("#jsCatBtn").click(function() {
-			var favoriteColor = "#" + $("#favoriteColor").val();
-			console.log("favorite color: " + favoriteColor);
-			
-			var favoriteCat = $("#favoriteCat").val();
-			console.log("favorite cat: " + favoriteCat);
-			
-			if (favoriteCat == "") {
-				$("#catError").show();
-				console.log("error");
-			} else {
-				switch(favoriteCat) {
-						case "0":
-								$("#cat1").css("background-color",favoriteColor);
-								$("#cat2").css("background-color","#fff");
-								$("#cat3").css("background-color","#fff");
-								break;
-						case "1":
-								$("#cat1").css("background-color","#fff");
-								$("#cat2").css("background-color",favoriteColor);
-								$("#cat3").css("background-color","#fff");	
-								break;
-						case "2":
-								$("#cat1").css("background-color","#fff");
-								$("#cat2").css("background-color","#fff");
-								$("#cat3").css("background-color",favoriteColor);
-								break;
-				}
-			}
-		});
-		var dateA = moment('2017-03-09');
-		console.log(dateA.fromNow());
-		$("#countdown").html(dateA.fromNow());
-	});
+  $(document).ready(function() {
+    var cats = ["Midnight", "Sadie", "Sidney"];
+    $("#cat1Name").html(cats[0]);
+    $("#cat2Name").html(cats[1]);
+    $("#cat3Name").html(cats[2]);
+
+    $("#jsCatBtn").click(function() {
+      var favoriteColor = "#" + $("#favoriteColor").val();
+      console.log("favorite color: " + favoriteColor);
+
+      var favoriteCat = $("#favoriteCat").val();
+      console.log("favorite cat: " + favoriteCat);
+
+      if (favoriteCat == "") {
+        $("#catError").show();
+        console.log("error");
+      } else {
+        switch (favoriteCat) {
+          case "0":
+            $("#cat1").css("background-color", favoriteColor);
+            $("#cat2").css("background-color", "#fff");
+            $("#cat3").css("background-color", "#fff");
+            break;
+          case "1":
+            $("#cat1").css("background-color", "#fff");
+            $("#cat2").css("background-color", favoriteColor);
+            $("#cat3").css("background-color", "#fff");
+            break;
+          case "2":
+            $("#cat1").css("background-color", "#fff");
+            $("#cat2").css("background-color", "#fff");
+            $("#cat3").css("background-color", favoriteColor);
+            break;
+        }
+      }
+    });
+    var dateA = moment('2017-03-09');
+    console.log(dateA.fromNow());
+    $("#countdown").html(dateA.fromNow());
+  });
+
 </script>
+
 </html>
