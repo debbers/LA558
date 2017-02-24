@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="description" content="Debbie Brasier - Assignments">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" type="text/css" href="../classes/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/assignment.css">
+  <script type="text/javascript" src="../classes/jquery/jquery-3.1.1.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+
+  <title>Debbie Brasier - Assignments</title>
+</head>
+
+<body>
+  <header role="banner">
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <div class="navbar-brand" href="#">
+            Debbie Brasier <em>Assignment 8</em>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <section>
+    <div class="row">
+      <div class="col-md-12">
+       <h1>Fun in Orlando</h1>
+        <div id="map"></div>
+      </div>
+    </div>
+  </section>
+  <footer>
+    Debbie Brasier
+    <br/> LA 558 | Web Mapping 2017
+  </footer>
+</body>
+<script>
+  $(document).ready(function() {
+    var map = L.map('map').setView([28.5, -81.4], 11);
+
+    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+    
+    //----------Adding multiple markers----------
+
+    //a array list
+    var fun = [
+      [28.418783, -81.581228, "Magic Kingdom"],
+      [28.388, -81.476, "Sheraton Vistana Villages Timeshare"],
+      [28.4115, -81.4617, "Sea World"],
+      [28.5719, -81.3690, "Orlando Science Center"]
+    ];
+
+    //loop through the array and add a marker for each
+    for (var i = 0; i < fun.length; i++) {
+      marker = new L.marker([fun[i][0],fun[i][1]])
+      .bindPopup(fun[i][2])
+      .addTo(map);
+    }
+    
+    //----------Adding circles----------
+    var circle1 = L.circle([28.4, -81.5], 500, {
+      color: 'red',
+      fillColor: '#c03',
+      fillOpacity: 0.5
+    }).addTo(map);
+    
+    var circle2 = L.circle([28.5, -81.6], 1000, {
+      color: 'blue',
+      fillColor: '#036',
+      fillOpacity: 0.7
+    }).addTo(map);
+    
+    //----------Adding circle markers for size of airports----------
+    var cm1 = new L.circleMarker([28.5488, -81.3321],{
+      radius: 10,
+      fillColor: '#FFEB3B',
+      color: '#ccc',
+      weight: 0,
+      opacity: 1,
+      fillOpacity: 1
+    })
+    .bindPopup("Orlando Executive Airport (medium)")
+    .addTo(map);
+    
+    var cm2 = new L.circleMarker([28.4793, -81.3676],{
+      radius: 5,
+      fillColor: '#E91E63',
+      color: '#ccc',
+      weight: 0,
+      opacity: 1,
+      fillOpacity: 1
+    })
+    .bindPopup("Lake Conway North Seaplane Base (small)")
+    .addTo(map);
+    
+    var cm3 = new L.circleMarker([28.4312, -81.3081],{
+      radius: 20,
+      fillColor: '#4CAF50',
+      color: '#ccc',
+      weight: 0,
+      opacity: 1,
+      fillOpacity: 1
+    })
+    .bindPopup("Orlando International Airport (large)")
+    .addTo(map);
+  });
+
+</script>
+
+</html>
