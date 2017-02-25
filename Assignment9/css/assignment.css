@@ -1,0 +1,26 @@
+.navbar {
+  background-color: #00ACC1;
+}
+.navbar-brand {
+  color: #ffffff !important;
+}
+footer {
+  text-align: center;
+}
+.text-center {
+  text-align: center;
+}
+#map {
+  width: 800px;
+  height: 500px;
+}
+section {
+  padding: 20px;
+}
+.my-div-icon {
+  background-color: orange;
+  color: #ffffff;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 8px;
+}

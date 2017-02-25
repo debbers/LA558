@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="description" content="Debbie Brasier - Assignments">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" type="text/css" href="../classes/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/assignment.css">
+  <script type="text/javascript" src="../classes/jquery/jquery-3.1.1.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+
+  <title>Debbie Brasier - Assignments</title>
+</head>
+
+<body>
+  <header role="banner">
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <div class="navbar-brand" href="#">
+            Debbie Brasier <em>Assignment 9</em>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <section>
+    <div class="row">
+      <div class="col-md-12">
+       <h1>Favorite places in Northern California</h1>
+        <div id="map"></div>
+      </div>
+    </div>
+  </section>
+  <footer>
+    Debbie Brasier
+    <br/> LA 558 | Web Mapping 2017
+  </footer>
+</body>
+<script>
+  $(document).ready(function() {
+    var map = L.map('map').setView([38.3396, -122.7011], 9);
+
+    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+    
+    // 1. One regular marker
+    var marker1 = L.marker([38.2321, -122.6102], {
+      opacity: 1,
+      title: "Legacy Marketing Group"
+    })
+    .bindPopup("<strong>Legacy Marketing Group</strong> This is where I used to work.")
+    .addTo(map);
+    
+    // 2. One marker with a custom icon
+    var houseIcon = L.icon({
+      iconUrl: 'img/icon-house.png',
+      iconSize:     [44, 44],
+      iconAnchor:   [22, 44],
+      popupAnchor:  [0, -40]
+    });
+    var marker2 = L.marker([38.370818, -122.6897082], {
+      icon: houseIcon,
+      opacity: 1,
+      title: "My old house"
+    })
+    .bindPopup("<strong>1130 Holly Ave</strong> This is where I used to live.")
+    .addTo(map);
+    
+    // 3. One marker as a div marker
+    // 4. The regular and custom icon markers should contain a popup that has some of the options covered in the lecture. Include some style or an image in your popup.
+    var myDivIcon = L.divIcon({
+      iconSize: new L.Point(60,18),
+      iconAnchor: new L.Point(30,10),
+      html: 'pumpkins',
+      className: 'my-div-icon',
+      popupAnchor:  [0, -20]
+    });
+    var marker3 = L.marker([38.2793831, -122.6865686], {
+      icon: myDivIcon,
+      opacity: 1,
+      title: "Petaluma Pumpkin Patch"
+    })
+    .bindPopup("<strong>Petaluma Pumpkin Patch</strong> This is the pumpkin patch that caused gridlock on the 101. We called it 'pumpkin traffic'.<br/><img src='img/pumpkinTraffic.jpeg' width='175px'/><br/>Starting in September, the field would be filled with pumpkins and would also include a corn maze. The patch is at the base of a hill, so as drivers would descend the hill, they always tried to solve the corn maze. It caused a lot of accidents and slow downs for 2 months in the fall.",{
+      maxWidth: 200, 
+      minWidth: 170, 
+      maxHeight: 80, 
+      autoPan: true, 
+      keepInView: true,
+      closeButton: true, 
+      autoPanPadding: [25, 5],
+    })
+    .addTo(map);
+    
+    // 5. Include 10 markers made using CircleMarkers. These markers should be colored following the technique covered in lecture video 18c. Try and use a different value or color scheme than the lecture did in your work.
+    var faveHikes = [
+      ["10",38.1564914,-122.5872781,"a","Olompali State Historic Park"],
+      ["50",38.5284471,-123.0052328,"e","Armstrong Redwoods State Natural Reserve"],
+      ["20",38.4246133,-122.6183652,"c","Annadel State Park"],
+      ["30",37.8890472,-122.6129768,"d","Mt. Tamalpais State Park"],
+      ["50",38.0722847,-122.8839254,"e","Point Reyes National Seashore"],
+      ["10",38.6312324,-122.8666025,"a","Healdsburg Ridge Open Space Preserve"],
+      ["5",38.3479203,-122.6492652,"a","Crane Creek Regional Park"],
+      ["12",38.3506722,-122.5606821,"b","Jack London State Historic Park"],
+      ["18",38.2936375,-122.3154638,"c","Skyline Wilderness Park"],
+      ["40",38.451173,-122.5429295,"d","Hood Mountain Regional Park"],
+    ];
+    function getColor(d) {
+      return  d == 'a' ? '#ca0020' :
+              d == 'b' ? "#f4a582" :
+              d == 'c' ? "#d1e5f0" :
+              d == 'd' ? "#92c5de" :
+              d == 'e' ? "#0571b0" :
+               "#FFFFFF"; //white
+    }
+
+    for (var i = 0; i < faveHikes.length; i++) {
+    marker = new L.circleMarker([faveHikes[i][1],faveHikes[i][2]], {
+      radius: faveHikes[i][0]/2,
+      fillColor: getColor(faveHikes[i][3]), 
+      color: "#000",
+      weight: 0,
+      opacity: 1,
+      fillOpacity: 0.9
+    })
+    .bindPopup(faveHikes[i][4])
+    .addTo(map);
+    }
+  });
+
+</script>
+
+</html>
