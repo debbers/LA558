@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="description" content="Debbie Brasier - Assignments">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" type="text/css" href="../classes/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/assignment.css">
+  <script type="text/javascript" src="../classes/jquery/jquery-3.1.1.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+
+  <title>Debbie Brasier - Assignments</title>
+</head>
+
+<body>
+  <header role="banner">
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <div class="navbar-brand" href="#">
+            Debbie Brasier <em>Assignment 10</em>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <section>
+    <div class="row">
+      <div class="col-md-12">
+       <h1>Five Events</h1>
+       <p>1. Click on the map to add a marker</p>
+       <button type="button" class="btn btn-default" id="event2">2. Des Moines</button>
+       <button type="button" class="btn btn-default" id="event3">3. Ames</button>
+       <button type="button" class="btn btn-default" id="event4">4. Get Zoom: <span id="zoomAmt"></span></button>
+       <button type="button" class="btn btn-default" id="event5">5. BVU Popup Link</button><br/><br/>
+        <div id="map"></div>
+      </div>
+    </div>
+  </section>
+  <footer>
+    Debbie Brasier
+    <br/> LA 558 | Web Mapping 2017
+  </footer>
+</body>
+<script>
+  $(document).ready(function() {
+    var map = L.map('map').setView([38.3396, -122.7011], 9);
+
+    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+    
+    // Event 1
+    function onMapClick(e) {
+      var marker = L.marker(e.latlng, {
+          draggable: true,
+          title: "Location",
+          alt: "Location2",
+          riseOnHover: true
+      }).addTo(map)
+      .bindPopup(e.latlng.toString()).openPopup();
+      marker.on("dragend", function (ev) {
+        var changedPos = ev.target.getLatLng();
+        this.bindPopup(changedPos.toString()).openPopup();
+      })
+    }
+    map.on('click', onMapClick);
+    
+    // Event 2
+    $("#event2").click(function(){
+      map.setView([41.589751, -93.6293212], 15);
+    });
+    
+    // Event 3
+    $("#event3").click(function(){
+      map.setView([42.0266187,-93.6486594], 9);
+    });
+    
+    // Event 4
+    $("#event4").click(function(){
+      x = map.getZoom();
+      $("#zoomAmt").html(x);
+    });
+    
+    // Event 5
+    $("#event5").click(function(){
+      map.setView([42.640722, -95.212264], 13);
+    });
+    var bvumarker = L.marker([42.640722, -95.212264], {
+      opacity: 1,
+      title: "BVU"
+    })
+    .bindPopup("<a href='http://www.bvu.edu/' target='_blank'>Buena Vista University</a>")
+    .addTo(map);
+    
+  });
+
+</script>
+
+</html>
