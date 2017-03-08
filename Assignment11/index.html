@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="description" content="Debbie Brasier - Assignments">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" type="text/css" href="../classes/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/assignment.css">
+  <script type="text/javascript" src="../classes/jquery/jquery-3.1.1.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+
+  <title>Debbie Brasier - Assignments</title>
+</head>
+
+<body>
+  <header role="banner">
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <div class="navbar-brand" href="#">
+            Debbie Brasier <em>Assignment 11</em>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <section>
+    <div class="row">
+      <div class="col-md-12">
+        <h1>Leaflet: Managing basemaps &amp overlays with layer control</h1>
+        <div id="map"></div>
+      </div>
+    </div>
+  </section>
+  <footer>
+    Debbie Brasier
+    <br/> LA 558 | Web Mapping 2017
+  </footer>
+</body>
+<script>
+  $(document).ready(function() {
+    // Base Layers
+    var OSM = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom: 18
+    });
+    var Esri_WorldStreetMap =
+      L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
+    });
+    var Esri_NatGeoWorldMap =
+        L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
+          attribution: 'Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC',
+          maxZoom: 16
+    });
+    var HikeBike_HikeBike = L.tileLayer('http://{s}.tiles.wmflabs.org/hikebike/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    });
+
+    // Overlay Layers
+    var polygon = L.polygon([
+      [38, -122],
+      [38, -123],
+      [43, -123],
+      [43, -122]
+    ],{
+        color: '#BBDEFB',
+        fillColor: '#0D47A1',
+        fillOpacity: 0.9
+    });
+    var drawPoly = L.layerGroup([polygon]);
+    
+    var sanfran     = L.marker([37.7576948,-122.4726193]).bindPopup('San Francisco, CA'),
+        seattle     = L.marker([47.6148267,-122.4059451]).bindPopup('Seattle, WA'),
+        losangeles  = L.marker([34.0055944,-118.6802959]).bindPopup('Los Angeles, CA'),
+        denver      = L.marker([39.7642548,-104.995193]).bindPopup('Denver, CO');
+    var drawCities = L.layerGroup([sanfran,seattle,losangeles,denver]);
+
+    // Create map
+    var map = L.map('map', {
+        center: new L.LatLng(38.3433627, -122.7216091),
+        zoom: 4,
+        layers: [Esri_WorldStreetMap, drawPoly]
+    });
+
+    // Layer control
+    var baseMaps = {
+      "OpenStreetMap": OSM,
+      "Esri_WorldStreetMap": Esri_WorldStreetMap,
+      "Esri_NatGeoWorldMap": Esri_NatGeoWorldMap,
+      "HikeBike_HikeBike": HikeBike_HikeBike,
+    };
+
+    var overlayMaps = {
+      "Polygon": drawPoly,
+      "Cities": drawCities
+    };
+
+    L.control.layers(baseMaps, overlayMaps).addTo(map);
+  });
+
+</script>
+
+</html>
