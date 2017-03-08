@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="description" content="Debbie Brasier - Assignments">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" type="text/css" href="../classes/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/assignment.css">
+  <script type="text/javascript" src="../classes/jquery/jquery-3.1.1.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+
+  <title>Debbie Brasier - Assignments</title>
+</head>
+
+<body>
+  <header role="banner">
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <div class="navbar-brand" href="#">
+            Debbie Brasier <em>Assignment 12</em>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <section>
+    <div class="row">
+      <div class="col-md-12">
+        <h1>Intro to JSON/GeoJSON &amp; practicing with Leaflet</h1>
+        <div id="map"></div>
+      </div>
+    </div>
+  </section>
+  <footer>
+    Debbie Brasier
+    <br/> LA 558 | Web Mapping 2017
+  </footer>
+</body>
+<script>
+  $(document).ready(function() {
+    // JSON Data
+    var cities = [{
+        "name" : "San Francisco, CA",
+        "lat" : "37.7677189",
+        "long" : "-122.389622",
+        "iconImage" : "img/icon-airport-heart.png",
+        "popupText" : "I left my heart in San Francisco."
+    },
+    {
+        "name" : "Los Angeles, CA",
+        "lat" : "34.0557337",
+        "long" : "-118.045112",
+        "iconImage" : "img/icon-airport-angel.png",
+        "popupText" : "The city of angels."
+    },
+    {
+        "name" : "Denver, CO",
+        "lat" : "39.7645187",
+        "long" : "-104.9951938",
+        "iconImage" : "img/icon-airport-mountain.png",
+        "popupText" : "The mile high city."
+    }];
+    
+    // Base Layers
+    var OSM = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom: 18
+    });
+    var Esri_WorldStreetMap =
+      L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
+    });
+    var Esri_NatGeoWorldMap =
+        L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
+          attribution: 'Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC',
+          maxZoom: 16
+    });
+
+    // Create map
+    var map = L.map('map', {
+        center: new L.LatLng(32.4710032,-106.0767786),
+        zoom: 4,
+        layers: [Esri_WorldStreetMap]
+    });
+    
+    // Cities I've lived in
+    var guttenberg  = L.marker([42.7903082,-91.1224766]).bindPopup('This is Guttenberg, IA'),
+        stormlake   = L.marker([42.6444978,-95.2350982]).bindPopup('This is Storm Lake, IA'),
+        urbandale   = L.marker([41.6438258,-93.8199033]).bindPopup('This is Urbandale, IA'),
+        westdm      = L.marker([41.5490244,-93.8081303]).bindPopup('This is West Des Moines, IA'),
+        rohnertpark = L.marker([38.3433964,-122.7216091]).bindPopup('This is Rohnert Park, CA')
+    
+    var cityLayerGroup = L.layerGroup([guttenberg, urbandale, westdm]);
+
+    // Layer control
+    var baseMaps = {
+      "OpenStreetMap": OSM,
+      "Esri_WorldStreetMap": Esri_WorldStreetMap,
+      "Esri_NatGeoWorldMap": Esri_NatGeoWorldMap,
+    };
+
+    var overlayMaps = {
+      "Storm Lake, IA": stormlake,
+      "Rohnert Park, CA": rohnertpark,
+      "Other Iowa Cities": cityLayerGroup
+    };
+
+    L.control.layers(baseMaps, overlayMaps).addTo(map);
+    
+    // Add JSON to map
+    for (var i = 0; i < cities.length; i++) {
+      var marker = L.marker([cities[i].lat, cities[i].long], {
+        icon: L.icon({
+          iconUrl: cities[i].iconImage,
+          iconSize:     [45, 61],
+          iconAnchor:   [30, 45],
+          popupAnchor:  [-5, -45]
+        }),
+        title: cities[i].name
+      }).bindPopup("<b>"+cities[i].name+"</b><br>"+cities[i].popupText+".").addTo(map);
+    }
+    
+    var iconChicgo = L.icon({
+      iconUrl: 'img/icon-airport-windy.png',
+      iconSize:     [45, 61],
+      iconAnchor:   [30, 45],
+      popupAnchor:  [-5, -45]
+    });
+    var markerChicago = L.marker([41.9741665,-87.9095101], {
+      icon: iconChicgo,
+      opacity: 1,
+      title: "O'Hare International Airport"
+    })
+    .bindPopup("O'Hare International Airport in Chicago, IL")
+    .addTo(map);
+    
+    var iconCancun = L.icon({
+      iconUrl: 'img/icon-airport-sun.png',
+      iconSize:     [45, 61],
+      iconAnchor:   [30, 45],
+      popupAnchor:  [-5, -45]
+    });
+    var markerCancun = L.marker([21.0403459,-86.8757527], {
+      icon: iconCancun,
+      opacity: 1,
+      title: "Cancun International Airport"
+    })
+    .bindPopup("Cancun International Airport in Cancun, Mexico")
+    .addTo(map);
+    
+    // Add GEO JSON
+    var myGeoJSON = [
+      {
+        "type": "FeatureCollection",
+        "features": [
+          {
+            "type": "Feature",
+            "properties": {},
+            "geometry": {
+              "type": "LineString",
+              "coordinates": [
+                [
+                  -87.91122436523438,
+                  41.98246303636425
+                ],
+                [
+                  -86.87576293945312,
+                  21.040927787394494
+                ]
+              ]
+            }
+          },
+          {
+            "type": "Feature",
+            "properties": {},
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                -115.3150827,
+                36.1251958
+              ]
+            }
+          }
+        ]
+      }
+    ]
+    var myStyle = {
+      "color": "#ff7800",
+      "weight": 5,
+      "opacity": 0.65,
+    };
+
+    L.geoJSON(myGeoJSON, {
+      style: myStyle,
+    }).addTo(map);
+
+  });
+
+</script>
+
+</html>
