@@ -10,7 +10,7 @@
   <script type="text/javascript" src="../classes/jquery/jquery-3.1.1.min.js"></script>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
-  <script src="https://debbers.github.io/LA558/data/states.json"></script>
+  <script src="https://indicator.extension.iastate.edu/classes/leaflet-ajax-gh-pages/dist/leaflet.ajax.min.js"></script>
 
   <title>Debbie Brasier - Assignments</title>
 </head>
@@ -42,40 +42,102 @@
 </body>
 <script>
   $(document).ready(function() {
-    var map = L.map('map').setView([42.04, -93.62], 7);
-    // add an OpenStreetMap tile layer
-
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-        attribution: 'LA558 assignment',
-        maxZoom: 18
+    var map = L.map('map').setView([37.0595485,-97.9983027], 4);
+    var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+      attribution: 'LA558',
+      maxZoom: 18
     }).addTo(map);
 
-    L.geoJson(cyStatues, {
-        style: function (feature) {
-            return {
-                //fillColor: 'red'
-            };
-        },
+    //set color of marker
+    function getColor(d) {
+      return d <= '1' ? '#9F0410' :
+        d <= '2' ? "#CF412E" :
+        d <= '3' ? "#F57146" :
+        d <= '4' ? "#14049F" :
+        d <= '5' ? "#253CBB" :
+        d <= '6' ? "#3B87E2" :
+        "#FFFFFF"; //white
+    }
 
-        pointToLayer: function (feature, latlng) {
-            return new L.CircleMarker(latlng, {
-                stroke: true,
-                weight: 2, //stroke weight
-                color: '#000000', //stroke color
-                opacity: 1.0, //stoke opacity
-          fillColor: 'red',
-                fillOpacity: 0.85,
-                radius: 10,
-                //title: this is not supported here - see layer.bindTooltip  below
-            });
-        },
-
-        onEachFeature: function (feature, layer) {
-            htmlText = "<strong>" + feature.properties.name + "</strong><br><img src='http://129.186.142.145/teachingGIS/webgis/cyStatues/" + feature.properties.photos + ".jpg' alt='Smiley face' height='266' width='200'>";
+    function style(feature) {
+        return {
+            fillColor: getColor(feature.properties.STATE),
+            weight: 1,
+            opacity: 1,
+            color: 'white',
+            dashArray: '2',
+            fillOpacity: 0.7
+        };
+    }
+    
+    url2 = "https://debbers.github.io/LA558/data/usa-state-capitals.json";
+    
+    var stateCapitalsLayerGroup = L.layerGroup([]);
+    
+    var myStyle = {
+      "color": "#ff7800",
+      "weight": 5,
+      "opacity": 0.65,
+    };
+    
+    var geojsonLayer2 = new L.GeoJSON.AJAX(url2 , {
+      style: myStyle,
+      onEachFeature: function (feature, layer) {
+            htmlText = "<strong>" + feature.properties.name + ", " + feature.properties.name;
             layer.bindPopup(htmlText);
-        layer.bindTooltip(feature.properties.name);
+        layer.bindTooltip(feature.properties.NAME);
         }
     }).addTo(map);
+    
+    L.geoJSON(myGeoJSON, {
+      style: myStyle,
+    }).addTo(map);
+
+    for (var i = 0; i < myPoints.length; i++) {
+      marker = new L.circleMarker([myPoints[i][1], myPoints[i][2]], {
+          radius: myPoints[i][0] / 2 + 5,
+          fillColor: getColorBreakfast(myPoints[i][3]),
+          color: "#000",
+          weight: 0,
+          opacity: 1,
+          fillOpacity: 0.9
+        })
+        .bindPopup("Category: " + myPoints[i][3]) //note there is no comma here
+        .addTo(breakfastLayerGroup);
+      breakfastLayerGroup.addTo(map);
+    }
+
+    url = "https://debbers.github.io/LA558/data/states.json";
+
+    var geojsonLayer = new L.GeoJSON.AJAX(url , {
+      style: style,
+      onEachFeature: function (feature, layer) {
+            htmlText = "<strong>" + feature.properties.NAME+ "</strong><br>Census area: " + feature.properties.CENSUSAREA;
+            layer.bindPopup(htmlText);
+        layer.bindTooltip(feature.properties.NAME);
+        }
+    }).addTo(map);
+
+    //Create Legend
+    var legend = L.control({
+      position: 'bottomleft'
+    });
+    
+    legend.onAdd = function(map) {
+      var div = L.DomUtil.create('div', 'info legend'),
+        opt_id = [1, 2, 3, 4, 5,6],
+        labels = ['1-10','11-20','21-30','31-40','41-50','51-60'];
+
+      div.innerHTML += "<b>States by JSON Number</b><br>";
+      for (var i = 0; i < labels.length; i++) {
+        //console.log(i + ' ' + labels[i] + ' '  + getColor(labels[i]));
+        div.innerHTML +=
+          '<i style="background:' + getColor(opt_id[i] ) + ' "></i> ' + labels[i]+'<br>';
+      }
+
+      return div;
+    };
+    legend.addTo(map);
 
   });
 
