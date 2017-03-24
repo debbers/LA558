@@ -162,7 +162,7 @@
           icon: customIcon,
           title: data.name,
           opacity: 0.75,
-        }).addTo(myMap).bindPopup("Current Weather: " + data.weather[0].description + "<br>Temp: " + data.main.temp + "&deg;F");
+        }).addTo(myMap).bindPopup("Current Weather: " + data.weather[0].description + "<br>Temp: " + temp + "&deg;F");
 
       });
     });
@@ -171,7 +171,6 @@
 
     function getWeather(callback) {
       console.log(city);
-      // My key isn't working yet
       var url = 'http://api.openweathermap.org/data/2.5/weather?q=' + city + '&mode=json&units=imperial&appid=c0b2ba7807033094cf17a40d389cdd4e';
       $.ajax({
         dataType: "jsonp",
