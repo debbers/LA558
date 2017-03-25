@@ -1,0 +1,215 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "interest": "hospital",
+        "name": "Mercy Medical Center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -93.62282752990723,
+          41.598339108742664
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "interest": "hospital",
+        "name": "Iowa Methodist Medical Center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -93.6342430114746,
+          41.589721606380074
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "interest": "hospital",
+        "name": "VA Medical Center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -93.66222381591797,
+          41.62763321850305
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "interest": "hospital",
+        "name": "Broadlawns Medical Center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -93.64199995994568,
+          41.616757768878415
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "interest": "hospital",
+        "name": "Iowa Lutheran Hospital"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -93.60965251922607,
+          41.6018692244153
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "interest": "hospital",
+        "name": "Methodist West Hospital"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -93.79603385925292,
+          41.5965418847684
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "interest": "hospital",
+        "name": "Mercy Medical Center-West Lakes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -93.78968238830566,
+          41.59728003638564
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "interest": "store",
+        "name": "Target"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -93.70054721832275,
+          41.62991073523181
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "interest": "store",
+        "name": "Target"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -93.76652956008911,
+          41.64727816306096
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "interest": "store",
+        "name": "Target"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -93.75316143035889,
+          41.59952653283977
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "interest": "store",
+        "name": "Target"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -93.77942562103271,
+          41.561903458327954
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "interest": "store",
+        "name": "Target"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -93.6025607585907,
+          41.52437091991136
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "interest": "restaurant",
+        "name": "Centro"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -93.63013386726378,
+          41.58587384906406
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "interest": "restaurant",
+        "name": "Magnolia Wine Kitchen"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -93.63554924726486,
+          41.58443539497697
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "interest": "restaurant",
+        "name": "Americana"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -93.6343502998352,
+          41.58461796205504
+        ]
+      }
+    }
+  ]
+}
