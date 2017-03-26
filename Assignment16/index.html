@@ -17,7 +17,7 @@
   <script src="https://indicator.extension.iastate.edu/classes/leaflet-ajax-gh-pages/dist/leaflet.ajax.min.js"></script>
   <script src="https://leaflet.github.io/Leaflet.markercluster/dist/leaflet.markercluster-src.js"></script>
   
-  <script src="https://debbers.github.io/LA558/data/subway.js"></script>
+  <script src="../data/subway.js"></script>
   <title>Debbie Brasier - Assignments</title>
 </head>
 
@@ -65,8 +65,8 @@
 
     for (var i = 0; i < addressPoints.length; i++) {
       var a = addressPoints[i];
-      var title = a[2];
-      var marker = L.marker(new L.LatLng(a[0], a[1]), {
+      var title = a[0];
+      var marker = L.marker(new L.LatLng(a[2], a[1]), {
         title: title
       });
       marker.bindPopup(title);
