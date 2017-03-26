@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="description" content="Debbie Brasier - Assignments">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <!-- CSS files -->
+  <link rel="stylesheet" type="text/css" href="../classes/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/assignment.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="../classes/Leaflet.awesome-markers/leaflet.awesome-markers.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+  <!-- JS files -->
+  <script type="text/javascript" src="../classes/jquery/jquery-3.1.1.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+  <script type="text/javascript" src="../classes/Leaflet.awesome-markers/leaflet.awesome-markers.js"></script>
+  <script src="https://indicator.extension.iastate.edu/classes/Leaflet.pattern-master/dist/leaflet.pattern-src.js"></script>
+  <script src="https://indicator.extension.iastate.edu/classes/leaflet-ajax-gh-pages/dist/leaflet.ajax.min.js"></script>
+
+  <title>Debbie Brasier - Assignments</title>
+</head>
+
+<body>
+  <header role="banner">
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <div class="navbar-brand" href="#">
+            Debbie Brasier <em>Assignment 15</em>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <section>
+    <div class="row">
+      <div class="col-md-12">
+        <h1>Leaflet data filtering &amp; awesome-markers</h1>
+        <div id="map"></div>
+        <div class="text-center">
+          <div class="btn-group">
+              <button type="button" id="allPoints" class="btn btn-info active">All points of interest</button>
+              <button type="button" id="hospitals" class="btn btn-info">Hospitals</button>
+              <button type="button" id="stores" class="btn btn-info">Targets</button>
+              <button type="button" id="restaurants" class="btn btn-info">Restaurants</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer>
+    Debbie Brasier
+    <br/> LA 558 | Web Mapping 2017
+  </footer>
+</body>
+<script>
+  $(document).ready(function() {
+    var hospitalIcon = L.AwesomeMarkers.icon({
+      prefix: 'fa',
+      markerColor: 'blue',
+      icon: 'fa-h-square'
+    });
+    
+    var targetIcon = L.AwesomeMarkers.icon({
+      prefix: 'fa',
+      markerColor: 'red',
+      icon: 'fa-bullseye'
+    });
+    
+    var restaurantIcon = L.AwesomeMarkers.icon({
+      prefix: 'fa',
+      markerColor: 'black',
+      icon: 'fa-cutlery'
+    });
+    
+    var map = L.map('map').setView([41.5938685,-.6319141], 11);
+    var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+      attribution: 'LA558',
+      maxZoom: 18
+    }).addTo(map);
+    
+    var pointsOfInterest = $.getJSON("https://debbers.github.io/LA558/data/des-moines-points.json");
+    
+    pointsOfInterest.then(function(data) {
+      var hospital = L.geoJson(data, {
+        filter: function(feature, layer) {
+          return feature.properties.interest == "hospital";
+        },
+        pointToLayer: function(feature, latlng) {
+          return L.marker(latlng, {
+            icon: hospitalIcon
+          }).on('mouseover', function() {
+            this.bindPopup(feature.properties.name).openPopup();
+          });
+        }
+      });
+
+      var store = L.geoJson(data, {
+        filter: function(feature, layer) {
+          return feature.properties.interest == "store";
+        },
+        pointToLayer: function(feature, latlng) {
+          return L.marker(latlng, {
+            icon: targetIcon
+          }).on('mouseover', function() {
+            this.bindPopup(feature.properties.name).openPopup();
+          });
+        }
+      });
+
+      var restaurant = L.geoJson(data, {
+        filter: function(feature, layer) {
+          return feature.properties.interest == "restaurant";
+        },
+        pointToLayer: function(feature, latlng) {
+          return L.marker(latlng, {
+            icon: restaurantIcon
+          }).on('mouseover', function() {
+            this.bindPopup(feature.properties.name).openPopup();
+          });
+        }
+      });
+
+      var allPointsOfInterest = L.geoJson(data, {
+          filter: function(feature, layer) {
+              return feature.properties.interest != "zzzzzz";
+          },
+          pointToLayer: function(feature, latlng) {
+              return L.marker(latlng, {
+              }).on('click', function() {
+                  this.bindPopup(feature.properties.name).openPopup();
+              });
+          }
+      });
+
+      function resizeBounds() {
+        map.fitBounds(allPointsOfInterest.getBounds(), {
+          padding: [50, 50]
+        });
+      }
+      resizeBounds();
+      
+      hospital.addTo(map);
+      store.addTo(map);
+      restaurant.addTo(map);
+
+      $("#allPoints").click(function() {
+        map.addLayer(hospital);
+        map.addLayer(store);
+        map.addLayer(restaurant);
+        $("div button").removeClass("active");
+        $(this).addClass("active");
+        resizeBounds();
+      });
+      $("#hospitals").click(function() {
+        map.addLayer(hospital);
+        map.removeLayer(store);
+        map.removeLayer(restaurant);
+        $("div button").removeClass("active");
+        $(this).addClass("active");
+        resizeBounds();
+      });
+
+      $("#stores").click(function() {
+        map.removeLayer(hospital);
+        map.addLayer(store);
+        map.removeLayer(restaurant);
+        $("div button").removeClass("active");
+        $(this).addClass("active");
+        resizeBounds();
+      });
+
+      $("#restaurants").click(function() {
+        map.removeLayer(hospital);
+        map.removeLayer(store);
+        map.addLayer(restaurant);
+        $("div button").removeClass("active");
+        $(this).addClass("active");
+        resizeBounds();
+      });
+    });
+
+    function getColor(d) {
+      return d >= '50' ? '#9F0410' :
+        d >= '40' ? "#CF412E" :
+        d >= '30' ? "#F57146" :
+        d >= '20' ? "#14049F" :
+        d >= '10' ? "#253CBB" :
+        d >= '0' ? "#3B87E2" :
+        "#FFFFFF";
+    }
+    
+    var stripe1 = new L.StripePattern({
+      weight: 1,
+      height: 8,
+      angle: 90,
+      opacity: 1,
+      spaceOpacity: 0.5,
+    });
+    stripe1.addTo(map);
+    
+    var stripe2 = new L.StripePattern({
+      weight: 1,
+      height: 8,
+      angle: 110,
+      opacity: 1,
+      spaceOpacity: 0.5,
+    });
+    stripe2.addTo(map);
+    
+    var stripe3 = new L.StripePattern({
+      weight: 1,
+      height: 8,
+      angle: 40,
+      opacity: 1,
+      spaceOpacity: 0.5,
+    });
+    stripe3.addTo(map);
+
+    function getPattern(d) {
+      return d >= '50' ? stripe1:
+        d >= '10' ? stripe2:
+        stripe3;
+    }
+
+    function style(feature) {
+        return {
+            fillColor: getColor(feature.properties.cartodb_id),
+            weight: 1,
+            opacity: 1,
+            dashArray: '2',
+            fillOpacity: 0.4,
+        };
+    }
+
+    url = "https://debbers.github.io/LA558/data/des-moines.geojson";
+
+    var geojsonLayer = new L.GeoJSON.AJAX(url , {
+      style: style,
+    }).addTo(map);
+
+    var geojsonLayer2 = new L.GeoJSON.AJAX(url , {
+      style: style,
+      onEachFeature: function (feature, layer) {
+          layer.setStyle({
+          weight: 3,
+          color: 'black',
+          fillPattern: getPattern(feature.properties.cartodb_id),
+          fillOpacity: 0.75
+          })
+          htmlText = "<strong>" + feature.properties.name;
+          layer.bindPopup(htmlText);
+      }
+   }).addTo(map);
+})
+
+</script>
+
+</html>
