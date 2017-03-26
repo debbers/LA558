@@ -16,9 +16,8 @@
   <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
   <script type="text/javascript" src="../classes/Leaflet.awesome-markers/leaflet.awesome-markers.js"></script>
   <script src="https://indicator.extension.iastate.edu/classes/Leaflet.pattern-master/dist/leaflet.pattern-src.js"></script>
-  <script src="https://indicator.extension.iastate.edu/classes/leaflet-ajax-gh-pages/dist/leaflet.ajax.min.js"></script>
 
-  <title>Debbie Brasier - Assignments</title>
+  <title>Debbie Brasier - Mini Project</title>
 </head>
 
 <body>
@@ -27,7 +26,7 @@
       <div class="container-fluid">
         <div class="navbar-header">
           <div class="navbar-brand" href="#">
-            Debbie Brasier <em>Assignment 15</em>
+            Debbie Brasier <em>Mini Project</em>
           </div>
         </div>
       </div>
@@ -36,16 +35,20 @@
   <section>
     <div class="row">
       <div class="col-md-12">
-        <h1>Leaflet data filtering &amp; awesome-markers</h1>
-        <div id="map"></div>
+        <h1>Mini Project: World Airports</h1>
         <div class="text-center">
           <div class="btn-group">
-              <button type="button" id="allPoints" class="btn btn-info active">All points of interest</button>
-              <button type="button" id="hospitals" class="btn btn-info">Hospitals</button>
-              <button type="button" id="stores" class="btn btn-info">Targets</button>
-              <button type="button" id="restaurants" class="btn btn-info">Restaurants</button>
+              <button type="button" id="allContinents" class="btn btn-info active">All continents</button>
+              <button type="button" id="americas" class="btn btn-info">Americas</button>
+              <button type="button" id="southAmerica" class="btn btn-info">South America</button>
+              <button type="button" id="europe" class="btn btn-info">Europe</button>
+              <button type="button" id="africa" class="btn btn-info">Africa</button>
+              <button type="button" id="asia" class="btn btn-info">Asia</button>
+              <button type="button" id="australia" class="btn btn-info">Australia</button>
+              <button type="button" id="Antarctica" class="btn btn-info">Antarctica</button>
           </div>
         </div>
+        <div id="map"></div>
       </div>
     </div>
   </section>
@@ -74,13 +77,13 @@
       icon: 'fa-cutlery'
     });
     
-    var map = L.map('map').setView([41.5938685,-.6319141], 11);
+    var map = L.map('map').setView([32.3856206,-79.194802], 4);
     var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
       attribution: 'LA558',
       maxZoom: 18
     }).addTo(map);
     
-    var pointsOfInterest = $.getJSON("https://debbers.github.io/LA558/data/des-moines-points.json");
+    var pointsOfInterest = $.getJSON("https://debbers.github.io/LA558/data/world_airports.geojson");
     
     pointsOfInterest.then(function(data) {
       var hospital = L.geoJson(data, {

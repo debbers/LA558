@@ -1,4 +1,4 @@
-var airportLocations = '[
+var airportLocations = [
   {
     "code": "AAA",
     "lat": "-17.3595",
@@ -77699,4 +77699,4 @@ var airportLocations = '[
     "direct_flights": "0",
     "carriers": "0"
   }
-]';
+];
