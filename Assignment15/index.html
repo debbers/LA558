@@ -238,11 +238,6 @@
 
     var geojsonLayer = new L.GeoJSON.AJAX(url , {
       style: style,
-      onEachFeature: function (feature, layer) {
-            htmlText = "<strong>" + feature.properties.name;
-            layer.bindPopup(htmlText);
-        layer.bindTooltip(feature.properties.name);
-        }
     }).addTo(map);
 
     var geojsonLayer2 = new L.GeoJSON.AJAX(url , {
@@ -253,7 +248,9 @@
           color: 'black',
           fillPattern: getPattern(feature.properties.cartodb_id),
           fillOpacity: 0.75
-        })
+          })
+          htmlText = "<strong>" + feature.properties.name;
+          layer.bindPopup(htmlText);
       }
    }).addTo(map);
 })
