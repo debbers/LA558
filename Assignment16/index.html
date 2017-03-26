@@ -58,34 +58,38 @@
       layers: [osm]
     });
     
-    url = "https://debbers.github.io/LA558/data/Subway-entrances.geojson";
-    
     var markers = L.markerClusterGroup();
     var singleMarkers = L.layerGroup([]);
-    
-    var stations = new L.GeoJSON.AJAX(url , {
-      onEachFeature: function (feature, layer) {
-        var title = feature.properties.name;
-        marker.bindPopup(title);
-        markers.addLayer(marker);
-        singleMarkers.addLayer(marker);
-        htmlText = feature.properties.description;
-        layer.bindPopup(htmlText);
-        layer.bindTooltip(feature.properties.description);
-      }
-    }).addTo(map);
+
+    for (var i = 0; i < addressPoints.length; i++) {
+      var a = addressPoints[i];
+      var title = a[2];
+      var marker = L.marker(new L.LatLng(a[0], a[1]), {
+        title: title
+      });
+      marker.bindPopup(title);
+      markers.addLayer(marker);
+      singleMarkers.addLayer(marker);
+    }
 
     map.addLayer(singleMarkers);
+
+
+    //layer control
 
     var baseMaps = {
       "OSM": osm
     };
+
     var overlayMaps = {
       "Single markers": singleMarkers,
       "Cluster": markers
 
     };
+
+
     L.control.layers(baseMaps, overlayMaps).addTo(map);
+
 })
 
 </script>
