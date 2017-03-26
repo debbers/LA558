@@ -51,67 +51,41 @@
         maxZoom: 18,
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors, Points &copy 2012 LINZ'
       }),
-      latlng = L.latLng(41.8308345,-87.6594132);
+      latlng = L.latLng(40.7153759,-73.9143559);
     var map = L.map('map', {
       center: latlng,
       zoom: 10,
       layers: [osm]
     });
     
-    url = "https://debbers.github.io/LA558/data/cityofchicago-data.json";
-    
-    var myStyle = {
-      "color": "#ff7800",
-      "weight": 5,
-      "opacity": 0.65,
-    };
-    
-    var geojsonLayer2 = new L.GeoJSON.AJAX(url2 , {
-      style: myStyle,
-      onEachFeature: function (feature, layer) {
-            htmlText = "<strong>" + feature.properties.name + ", " + feature.properties.state;
-            layer.bindPopup(htmlText);
-        layer.bindTooltip(feature.properties.name);
-        }
-    }).addTo(map);
-    
-    
-    
+    url = "https://debbers.github.io/LA558/data/Subway-entrances.geojson";
     
     var markers = L.markerClusterGroup();
     var singleMarkers = L.layerGroup([]);
-
-    for (var i = 0; i < addressPoints.length; i++) {
-      var a = addressPoints[i];
-      var title = a[2];
-      var marker = L.marker(new L.LatLng(a[0], a[1]), {
-        title: title
-      });
-      marker.bindPopup(title);
-      markers.addLayer(marker);
-      singleMarkers.addLayer(marker);
-    }
+    
+    var stations = new L.GeoJSON.AJAX(url , {
+      onEachFeature: function (feature, layer) {
+        var title = feature.properties.name;
+        marker.bindPopup(title);
+        markers.addLayer(marker);
+        singleMarkers.addLayer(marker);
+        htmlText = feature.properties.description;
+        layer.bindPopup(htmlText);
+        layer.bindTooltip(feature.properties.description);
+      }
+    }).addTo(map);
 
     map.addLayer(singleMarkers);
-
-
-    //layer control
 
     var baseMaps = {
       "OSM": osm
     };
-
     var overlayMaps = {
       "Single markers": singleMarkers,
       "Cluster": markers
 
     };
-
-
     L.control.layers(baseMaps, overlayMaps).addTo(map);
-
-
-
 })
 
 </script>
