@@ -16,6 +16,7 @@
   <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
   <script src="https://indicator.extension.iastate.edu/classes/leaflet-ajax-gh-pages/dist/leaflet.ajax.min.js"></script>
   <script src="https://leaflet.github.io/Leaflet.markercluster/dist/leaflet.markercluster-src.js"></script>
+  <script	 src="https://leaflet.github.io/Leaflet.heat/dist/leaflet-heat.js"></script>
   
   <script src="../data/subway.js"></script>
   <title>Debbie Brasier - Assignments</title>
@@ -54,6 +55,13 @@
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors, Points &copy 2012 LINZ'
       }),
       latlng = L.latLng(40.7153759,-73.9143559);
+    
+    var Stamen_TonerLines = L.tileLayer('http://{s}.tile.stamen.com/toner-lines/{z}/{x}/{y}.png', {
+      attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+      subdomains: 'abcd',
+      minZoom: 0,
+      maxZoom: 20
+    });
     var map = L.map('map', {
       center: latlng,
       zoom: 10,
@@ -73,23 +81,44 @@
       markers.addLayer(marker);
       singleMarkers.addLayer(marker);
     }
-
     map.addLayer(singleMarkers);
-
-
-    //layer control
+    
+    // Heat map code
+    var myArray = [];
+    var max = 100;
+    var min = 1;
+    
+    for (var i = 0; i < addressPoints.length; i++) {
+      var a = addressPoints[i];
+      var x = a[2];
+      var y = a[1];
+      z = Math.floor(Math.random() * (max - min + 1)) + min;
+      myArray.push([x, y, z]);
+    }
+    //console.log(myArray);
+    var heatMap = L.heatLayer(myArray, {
+      minOpacity: 0.1,
+      maxZoom: 19,
+      max: 1.0,
+      radius: 25,
+      blur: 15,
+      gradient: {
+          0.2: 'yellow', 
+          0.65: 'lime', 
+          1: 'red'
+      }
+    });
 
     var baseMaps = {
-      "OSM": osm
+      "OSM": osm,
+      "Stamen_TonerLines": Stamen_TonerLines
     };
-
     var overlayMaps = {
       "Single markers": singleMarkers,
-      "Cluster": markers
+      "Cluster": markers,
+      "Heat Map": heatMap
 
     };
-
-
     L.control.layers(baseMaps, overlayMaps).addTo(map);
 
 })
