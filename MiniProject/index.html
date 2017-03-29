@@ -389,20 +389,12 @@
 //        }).addTo(map);
         
         
-    stateCapitals.then(function(data) {
-      var hospital = L.geoJson(data, {
+    stateCoordinates.then(function(data) {
         filter: function(feature, layer) {
           return feature.properties.interest == "hospital";
-        },
-        pointToLayer: function(feature, latlng) {
-          return L.marker(latlng, {
-            icon: hospitalIcon
-          }).on('mouseover', function() {
-            this.bindPopup(feature.properties.name).openPopup();
-          });
         }
-      });
-      });
+        alert("here");
+    });
         
         
         
