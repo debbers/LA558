@@ -16,6 +16,8 @@
   <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
   <script type="text/javascript" src="../classes/Leaflet.awesome-markers/leaflet.awesome-markers.js"></script>
   <script src="https://indicator.extension.iastate.edu/classes/leaflet-ajax-gh-pages/dist/leaflet.ajax.min.js"></script>
+  
+  <script src="../data/states-coordinates.js"></script>
 
   <title>Debbie Brasier - Mini Project</title>
 </head>
@@ -147,8 +149,6 @@
     }
     
     var worldAirports = $.getJSON("https://debbers.github.io/LA558/data/world_airports.geojson");
-    
-    var stateCapitals = $.getJSON("https://debbers.github.io/LA558/data/usa-state-capitals.json");
     
     worldAirports.then(function(data) {
       var typeMajor = L.geoJson(data, {
@@ -371,34 +371,16 @@
         map.addLayer(typeMilitary);
         $("div button").removeClass("active");
         
-        console.log($(this).val());
-
-//        var myStyle = {
-//          "color": "#ff7800",
-//          "weight": 5,
-//          "opacity": 0.65,
-//        };
-//
-//        var geojsonLayer2 = new L.GeoJSON.AJAX(stateCapitals , {
-//          style: myStyle,
-//          onEachFeature: function (feature, layer) {
-//                htmlText = "<strong>" + feature.properties.name + ", " + feature.properties.state;
-//                layer.bindPopup(htmlText);
-//            layer.bindTooltip(feature.properties.name);
-//            }
-//        }).addTo(map);
-        
-        
-    stateCoordinates.then(function(data) {
-        filter: function(feature, layer) {
-          return feature.properties.interest == "hospital";
+        for (var i = 0; i < stateCoordinates.length; i++) {
+          var a = stateCoordinates[i];
+          var stateAbbrev = a[0];
+          var x = a[1];
+          var y = a[2];
+          if (stateAbbrev == $(this).val()) {
+            console.log("Y:" + stateAbbrev + " " + x + " " + y);
+            map.setView([x,y],7)
+          }
         }
-        alert("here");
-    });
-        
-        
-        
-        
     });
   });
     
