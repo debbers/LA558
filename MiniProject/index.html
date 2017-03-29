@@ -15,7 +15,7 @@
   <script type="text/javascript" src="../classes/jquery/jquery-3.1.1.min.js"></script>
   <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
   <script type="text/javascript" src="../classes/Leaflet.awesome-markers/leaflet.awesome-markers.js"></script>
-  <script src="https://indicator.extension.iastate.edu/classes/Leaflet.pattern-master/dist/leaflet.pattern-src.js"></script>
+  <script src="https://indicator.extension.iastate.edu/classes/leaflet-ajax-gh-pages/dist/leaflet.ajax.min.js"></script>
 
   <title>Debbie Brasier - Mini Project</title>
 </head>
@@ -36,15 +36,88 @@
     <div class="row">
       <div class="col-md-12">
         <h1>Mini Project: World Airports</h1>
-        <div class="text-center">
-          <div class="btn-group">
-              <button type="button" id="allAirports" class="btn btn-info active">All Airports</button>
-              <button type="button" id="major" class="btn btn-info">Major</button>
-              <button type="button" id="mid" class="btn btn-info">Midsize</button>
-              <button type="button" id="small" class="btn btn-info">Small</button>
-              <button type="button" id="military" class="btn btn-info">Military</button>
+        <p>To see a selection of world airports, choose from the following options:</p>
+        <div class="row">
+          <div class="col-md-6">
+           <div class="panel panel-default">
+             <div class="panel-heading">Option 1: Choose type of airport</div>
+             <div class="panel-body">
+               <div class="text-center">
+                <div class="btn-group">
+                    <button type="button" id="allAirports" class="btn btn-info active">All Airports</button>
+                    <button type="button" id="major" class="btn btn-info">Major</button>
+                    <button type="button" id="mid" class="btn btn-info">Midsize</button>
+                    <button type="button" id="small" class="btn btn-info">Small</button>
+                    <button type="button" id="military" class="btn btn-info">Military</button>
+                </div>
+              </div>
+             </div>
+           </div>
+          </div>
+          <div class="col-md-6">
+           <div class="panel panel-default">
+             <div class="panel-heading">Option 2: Choose a state</div>
+             <div class="panel-body">
+               <div class="text-center">
+                <select name="state" id="state">
+                 <option> </option>
+                  <option value="AL">Alabama</option>
+                  <option value="AK">Alaska</option>
+                  <option value="AZ">Arizona</option>
+                  <option value="AR">Arkansas</option>
+                  <option value="CA">California</option>
+                  <option value="CO">Colorado</option>
+                  <option value="CT">Connecticut</option>
+                  <option value="DE">Delaware</option>
+                  <option value="FL">Florida</option>
+                  <option value="GA">Georgia</option>
+                  <option value="HI">Hawaii</option>
+                  <option value="ID">Idaho</option>
+                  <option value="IL">Illinois</option>
+                  <option value="IN">Indiana</option>
+                  <option value="IA">Iowa</option>
+                  <option value="KS">Kansas</option>
+                  <option value="KY">Kentucky</option>
+                  <option value="LA">Louisiana</option>
+                  <option value="ME">Maine</option>
+                  <option value="MD">Maryland</option>
+                  <option value="MA">Massachusetts</option>
+                  <option value="MI">Michigan</option>
+                  <option value="MN">Minnesota</option>
+                  <option value="MS">Mississippi</option>
+                  <option value="MO">Missouri</option>
+                  <option value="MT">Montana</option>
+                  <option value="NE">Nebraska</option>
+                  <option value="NV">Nevada</option>
+                  <option value="NH">New Hampshire</option>
+                  <option value="NJ">New Jersey</option>
+                  <option value="NM">New Mexico</option>
+                  <option value="NY">New York</option>
+                  <option value="NC">North Carolina</option>
+                  <option value="ND">North Dakota</option>
+                  <option value="OH">Ohio</option>
+                  <option value="OK">Oklahoma</option>
+                  <option value="OR">Oregon</option>
+                  <option value="PA">Pennsylvania</option>
+                  <option value="RI">Rhode Island</option>
+                  <option value="SC">South Carolina</option>
+                  <option value="SD">South Dakota</option>
+                  <option value="TN">Tennessee</option>
+                  <option value="TX">Texas</option>
+                  <option value="UT">Utah</option>
+                  <option value="VT">Vermont</option>
+                  <option value="VA">Virginia</option>
+                  <option value="WA">Washington</option>
+                  <option value="WV">West Virginia</option>
+                  <option value="WI">Wisconsin</option>
+                  <option value="WY">Wyoming</option>
+                </select>
+              </div>
+             </div>
+           </div>
           </div>
         </div>
+        
         <div id="map"></div>
       </div>
     </div>
@@ -65,7 +138,7 @@
     function getColor(d) {
       return  d == 'major' ? '#ca0020' :
               d == 'mid' ? "#f4a582" :
-              d == 'small' ? "#d1e5f0" :
+              d == 'small' ? "#bae4bc" :
               d == 'military' ? "#92c5de" :
               d == 'major and military' ? "#92c5de" :
               d == 'mid and military' ? "#92c5de" :
@@ -73,13 +146,9 @@
                "#FFFFFF"; //white
     }
     
-    var map = L.map('map').setView([32.3856206,-79.194802], 4);
-    var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      attribution: 'LA558',
-      maxZoom: 18
-    }).addTo(map);
-    
     var worldAirports = $.getJSON("https://debbers.github.io/LA558/data/world_airports.geojson");
+    
+    var stateCapitals = $.getJSON("https://debbers.github.io/LA558/data/usa-state-capitals.json");
     
     worldAirports.then(function(data) {
       var typeMajor = L.geoJson(data, {
@@ -92,7 +161,7 @@
             stroke: true,
             weight: 0.0,
             fillColor: getColor(feature.properties.type),
-            fillOpacity: 0.5,
+            fillOpacity: 0.6,
         }).on('mouseover', function() {
             this.bindPopup("<a target='_blank' href='" + feature.properties.wikipedia + "'>" +feature.properties.name + " (" + feature.properties.abbrev + ")</a>").openPopup();
           });
@@ -109,7 +178,7 @@
             stroke: true,
             weight: 0.0,
             fillColor: getColor(feature.properties.type),
-            fillOpacity: 0.5,
+            fillOpacity: 0.7,
         }).on('mouseover', function() {
             this.bindPopup("<a target='_blank' href='" + feature.properties.wikipedia + "'>" +feature.properties.name + " (" + feature.properties.abbrev + ")</a>").openPopup();
           });
@@ -126,7 +195,7 @@
             stroke: true,
             weight: 0.0,
             fillColor: getColor(feature.properties.type),
-            fillOpacity: 0.5,
+            fillOpacity: 0.8,
         }).on('mouseover', function() {
             this.bindPopup("<a target='_blank' href='" + feature.properties.wikipedia + "'>" +feature.properties.name + " (" + feature.properties.abbrev + ")</a>").openPopup();
           });
@@ -143,7 +212,7 @@
             stroke: true,
             weight: 0.0,
             fillColor: getColor(feature.properties.type),
-            fillOpacity: 0.5,
+            fillOpacity: 0.7,
         }).on('mouseover', function() {
             this.bindPopup("<a target='_blank' href='" + feature.properties.wikipedia + "'>" +feature.properties.name + " (" + feature.properties.abbrev + ")</a>").openPopup();
           });
@@ -160,19 +229,90 @@
             stroke: true,
             weight: 0.0,
             fillColor: getColor(feature.properties.type),
-            fillOpacity: 0.5,
+            fillOpacity: 0.8,
         }).on('mouseover', function() {
             this.bindPopup("<a target='_blank' href='" + feature.properties.wikipedia + "'>" +feature.properties.name + " (" + feature.properties.abbrev + ")</a>").openPopup();
           });
         }
       });
+    
+      //var map = L.map('map').setView([32.3856206,-79.194802], 4);
+      var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        attribution: 'LA558',
+        maxZoom: 18
+      });
+      var OpenTopoMap = L.tileLayer('http://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+        maxZoom: 17,
+        attribution: 'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+      });
+      var OpenWeatherMap_Clouds = L.tileLayer('http://{s}.tile.openweathermap.org/map/clouds/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: 'Map data &copy; <a href="http://openweathermap.org">OpenWeatherMap</a>',
+        opacity: 0.5
+      });
+//      This map isn't working. :(
+//       var NASAGIBS_ModisTerraLSTDay = L.tileLayer('http://map1.vis.earthdata.nasa.gov/wmts-webmerc/MODIS_Terra_Land_Surface_Temp_Day/default/{time}/{tilematrixset}{maxZoom}/{z}/{y}/{x}.{format}', {
+//        attribution: 'Imagery provided by services from the Global Imagery Browse Services (GIBS), operated by the NASA/GSFC/Earth Science Data and Information System (<a href="https://earthdata.nasa.gov">ESDIS</a>) with funding provided by NASA/HQ.',
+//        bounds: [[-85.0511287776, -179.999999975], [85.0511287776, 179.999999975]],
+//        minZoom: 1,
+//        maxZoom: 7,
+//        format: 'png',
+//        time: '',
+//        tilematrixset: 'GoogleMapsCompatible_Level',
+//        opacity: 0.75
+//      });
 
-      function resizeBounds() {
-//        map.fitBounds(allPointsOfInterest.getBounds(), {
-//          padding: [50, 50]
-//        });
+      var map = L.map('map', {
+        center: new L.LatLng(32.3856206,-79.194802),
+        zoom: 4,
+        layers: [osm]
+      });
+      var baseMaps = {
+        "OpenStreetMap": osm,
+        "OpenTopoMap": OpenTopoMap,
+      };
+      var overlayMaps = {
+//        "Weather": NASAGIBS_ModisTerraLSTDay,
+        "Cloud Cover": OpenWeatherMap_Clouds,
+      };
+      L.control.layers(baseMaps, overlayMaps).addTo(map);
+      
+      //Create Legend
+      var legend = L.control({
+        position: 'bottomleft'
+      });
+
+      legend.onAdd = function(map) {
+        var div = L.DomUtil.create('div', 'info legend'),
+          opt_id = ["major", "mid", "small", "military"],
+          labels = ['Major','Mid-size','Small','Miliary'];
+
+        div.innerHTML += "<b>Airports by Size/Type</b><br>";
+        for (var i = 0; i < labels.length; i++) {
+          div.innerHTML +=
+            '<i style="background:' + getColor(opt_id[i] ) + ' "></i> ' + labels[i]+'<br>';
+        }
+        return div;
+      };
+      legend.addTo(map);
+
+      function resizeBounds(airportType) {
+        if (airportType == "typeAll" || airportType == "typeMajor" || airportType == "typeMid") {
+          map.fitBounds(typeMajor.getBounds(), {
+            padding: [50, 50]
+          });
+        } else if (airportType == "typeSmall") {
+          map.fitBounds(typeSmall.getBounds(), {
+            padding: [50, 50]
+          });
+        }else if (airportType == "typeMilitary") {
+          map.fitBounds(typeMilitary.getBounds(), {
+            padding: [50, 50]
+          });
+        }
+        
       }
-      resizeBounds();
+      resizeBounds("typeAll");
       
       typeMajor.addTo(map);
       typeMid.addTo(map);
@@ -186,7 +326,7 @@
         map.addLayer(typeMilitary);
         $("div button").removeClass("active");
         $(this).addClass("active");
-        resizeBounds();
+        resizeBounds("typeAll");
       });
       $("#major").click(function() {
         map.addLayer(typeMajor);
@@ -195,7 +335,7 @@
         map.removeLayer(typeMilitary);
         $("div button").removeClass("active");
         $(this).addClass("active");
-        resizeBounds();
+        resizeBounds("typeMajor");
       });
       $("#mid").click(function() {
         map.removeLayer(typeMajor);
@@ -204,7 +344,7 @@
         map.removeLayer(typeMilitary);
         $("div button").removeClass("active");
         $(this).addClass("active");
-        resizeBounds();
+        resizeBounds("typeMid");
       });
       $("#small").click(function() {
         map.removeLayer(typeMajor);
@@ -213,7 +353,7 @@
         map.removeLayer(typeMilitary);
         $("div button").removeClass("active");
         $(this).addClass("active");
-        resizeBounds();
+        resizeBounds("typeSmall");
       });
       $("#military").click(function() {
         map.removeLayer(typeMajor);
@@ -222,72 +362,56 @@
         map.addLayer(typeMilitary);
         $("div button").removeClass("active");
         $(this).addClass("active");
-        resizeBounds();
+        resizeBounds("typeMilitary");
       });
-    });
-    
-//    var stripe1 = new L.StripePattern({
-//      weight: 1,
-//      height: 8,
-//      angle: 90,
-//      opacity: 1,
-//      spaceOpacity: 0.5,
-//    });
-//    stripe1.addTo(map);
-//    
-//    var stripe2 = new L.StripePattern({
-//      weight: 1,
-//      height: 8,
-//      angle: 110,
-//      opacity: 1,
-//      spaceOpacity: 0.5,
-//    });
-//    stripe2.addTo(map);
-//    
-//    var stripe3 = new L.StripePattern({
-//      weight: 1,
-//      height: 8,
-//      angle: 40,
-//      opacity: 1,
-//      spaceOpacity: 0.5,
-//    });
-//    stripe3.addTo(map);
-//
-//    function getPattern(d) {
-//      return d >= '50' ? stripe1:
-//        d >= '10' ? stripe2:
-//        stripe3;
-//    }
-//
-//    function style(feature) {
-//        return {
-//            fillColor: getColor(feature.properties.cartodb_id),
-//            weight: 1,
-//            opacity: 1,
-//            dashArray: '2',
-//            fillOpacity: 0.4,
+      $("#state").change(function() {
+        map.addLayer(typeMajor);
+        map.addLayer(typeMid);
+        map.addLayer(typeSmall);
+        map.addLayer(typeMilitary);
+        $("div button").removeClass("active");
+        
+        console.log($(this).val());
+
+//        var myStyle = {
+//          "color": "#ff7800",
+//          "weight": 5,
+//          "opacity": 0.65,
 //        };
-//    }
 //
-//    url = "https://debbers.github.io/LA558/data/des-moines.geojson";
-//
-//    var geojsonLayer = new L.GeoJSON.AJAX(url , {
-//      style: style,
-//    }).addTo(map);
-//
-//    var geojsonLayer2 = new L.GeoJSON.AJAX(url , {
-//      style: style,
-//      onEachFeature: function (feature, layer) {
-//          layer.setStyle({
-//          weight: 3,
-//          color: 'black',
-//          fillPattern: getPattern(feature.properties.cartodb_id),
-//          fillOpacity: 0.75
-//          })
-//          htmlText = "<strong>" + feature.properties.name;
-//          layer.bindPopup(htmlText);
-//      }
-//   }).addTo(map);
+//        var geojsonLayer2 = new L.GeoJSON.AJAX(stateCapitals , {
+//          style: myStyle,
+//          onEachFeature: function (feature, layer) {
+//                htmlText = "<strong>" + feature.properties.name + ", " + feature.properties.state;
+//                layer.bindPopup(htmlText);
+//            layer.bindTooltip(feature.properties.name);
+//            }
+//        }).addTo(map);
+        
+        
+    stateCapitals.then(function(data) {
+      var hospital = L.geoJson(data, {
+        filter: function(feature, layer) {
+          return feature.properties.interest == "hospital";
+        },
+        pointToLayer: function(feature, latlng) {
+          return L.marker(latlng, {
+            icon: hospitalIcon
+          }).on('mouseover', function() {
+            this.bindPopup(feature.properties.name).openPopup();
+          });
+        }
+      });
+      });
+        
+        
+        
+        
+    });
+  });
+    
+    
+
 })
 
 </script>
