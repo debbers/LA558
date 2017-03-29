@@ -121,6 +121,7 @@
         </div>
         
         <div id="map"></div>
+        <p class="small">The size of the airport marker is defined by it's national scale in the GEOJSON file.</p>
       </div>
     </div>
   </section>
@@ -131,12 +132,6 @@
 </body>
 <script>
   $(document).ready(function() {
-    var hospitalIcon = L.AwesomeMarkers.icon({
-      prefix: 'fa',
-      markerColor: 'blue',
-      icon: 'fa-h-square'
-    });
-    
     function getColor(d) {
       return  d == 'major' ? '#ca0020' :
               d == 'mid' ? "#f4a582" :
