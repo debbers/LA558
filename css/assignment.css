@@ -1,0 +1,48 @@
+.navbar {
+  background-color: #00ACC1;
+}
+.navbar-brand, ul.nav.navbar-nav.navbar-right li a {
+  color: #ffffff !important;
+}
+footer {
+  text-align: center;
+}
+section {
+  padding: 20px;
+}
+.center {
+  margin: auto;
+  width: 50%;
+}
+.text-center {
+  text-align: center !important;
+}
+.text-right {
+  text-align: right !important;
+}
+h1 {
+  margin-top: 0px;
+}
+.assignmentImg {
+  width: 200px;
+  height: 200px;
+}
+.assignmentIcon {
+  width: 200px;
+  height: 200px;
+  border: 1px solid #ccc;
+  margin: auto;
+}
+.assignmentIcon div img {
+  text-decoration: none;
+}
+.assignmentDescription {
+  font-weight: bold;
+  text-align: center;
+}
+.assignmentDate {
+  font-size: 10px;
+  color: #ccc;
+  margin-bottom: 15px;
+  text-align: center;
+}
