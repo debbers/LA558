@@ -25,12 +25,12 @@ h1 {
 }
 .assignmentImg {
   width: 200px;
-  height: 200px;
+  height: 100px;
+  border: 1px solid #ccc;
 }
 .assignmentIcon {
   width: 200px;
-  height: 200px;
-  border: 1px solid #ccc;
+  height: 100px;
   margin: auto;
 }
 .assignmentIcon div img {
@@ -43,6 +43,6 @@ h1 {
 .assignmentDate {
   font-size: 10px;
   color: #ccc;
-  margin-bottom: 15px;
+  margin-bottom: 30px;
   text-align: center;
 }
