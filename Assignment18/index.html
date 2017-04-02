@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="description" content="Debbie Brasier - Assignments">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <!-- CSS files -->
+  <link rel="stylesheet" type="text/css" href="../classes/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/assignment.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+  <!-- JS files -->
+  <script type="text/javascript" src="../classes/jquery/jquery-3.1.1.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+  <script src="https://indicator.extension.iastate.edu/classes/leaflet-ajax-gh-pages/dist/leaflet.ajax.min.js"></script>
+  <title>Debbie Brasier - Assignments</title>
+</head>
+
+<body>
+  <header role="banner">
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <div class="navbar-brand" href="#">
+            Debbie Brasier <em>Assignment 18</em>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <section>
+    <div class="row">
+      <div class="col-md-12">
+        <h1>Geocoded addresses</h1>
+        <form class="form-inline">
+          <div class="form-group">
+            <label for="myAddress">Address</label>
+            <input type="text" class="form-control" size="50" id="myAddress"/>
+          </div>
+          <button type="button" id="geocode" class="btn btn-primary">Submit</button>
+        </form><br/><br/>
+        <div id="map"></div>
+      </div>
+    </div>
+  </section>
+  <footer>
+    Debbie Brasier
+    <br/> LA 558 | Web Mapping 2017
+  </footer>
+</body>
+<script>
+  $(document).ready(function() {
+    var map = L.map('map').setView([43, -93], 12);
+
+    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom: 18
+    }).addTo(map);
+
+    //$('#myAddress').val('920 Timberline Dr, Polk City, IA 50226');
+    $('#myAddress').focus();
+
+    $('#geocode').click(function () {
+        myAddress = encodeURI($('#myAddress').val());
+
+        var geocodingAPI_URL = "https://maps.googleapis.com/maps/api/geocode/json?address=" + myAddress + "&sensor=true";
+
+        console.log(geocodingAPI_URL);
+
+        $.getJSON(geocodingAPI_URL, function (json) {
+            var address = json.results[0].formatted_address;
+            var lat = json.results[0].geometry.location.lat;
+            var long = json.results[0].geometry.location.lng;
+            console.log(address);
+            console.log(lat);
+            console.log(long);
+            var county = '';
+            var township = '';
+            var popupText = '';
+            $.each(json.results[0].address_components, function (i, jsonData) {
+                level = jsonData.types[0];
+                if ('administrative_area_level_2' === level.toLowerCase()) {
+                    county = (jsonData.short_name);
+                }
+                if ('administrative_area_level_3' === level.toLowerCase()) {
+                    township = (jsonData.short_name);
+                }
+            });
+            var marker = L.marker([lat, long], {
+                draggable: false,
+                title: address,
+                opacity: 0.75
+            }).addTo(map);
+            popupText = "<strong>County:</strong> " + county + "<br/>";
+            popupText = popupText + "<strong>Township:</strong> " + township + "<br/>";
+            popupText = popupText + "<strong>Latitude:</strong> " + lat + "<br/>";
+            popupText = popupText + "<strong>Longitude:</strong> " + long;
+            marker.bindPopup(popupText).openPopup();
+
+            map.setView([lat, long]);
+        });
+      }); //end geocode click function
+  })
+
+</script>
+
+</html>
