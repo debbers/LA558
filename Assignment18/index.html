@@ -5,14 +5,23 @@
   <meta name="description" content="Debbie Brasier - Assignments">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
+  <!--External Data-->	
+  <script src="https://indicator.extension.iastate.edu/z_cjs/teachingGIS/webGIS_17/studentFeaturesDB.php?userID=debbie2&theFunction=responseVar"></script>
   <!-- CSS files -->
   <link rel="stylesheet" type="text/css" href="../classes/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="css/assignment.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="../classes/Leaflet.awesome-markers/leaflet.awesome-markers.css" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+  <!--link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.css" /-->
   <!-- JS files -->
   <script type="text/javascript" src="../classes/jquery/jquery-3.1.1.min.js"></script>
   <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+  <script type="text/javascript" src="../classes/Leaflet.awesome-markers/leaflet.awesome-markers.js"></script>
   <script src="https://indicator.extension.iastate.edu/classes/leaflet-ajax-gh-pages/dist/leaflet.ajax.min.js"></script>
+  <!--script src="https://leaflet.github.io/Leaflet.markercluster/dist/leaflet.markercluster-src.js"></script-->
+  <script	 src="https://leaflet.github.io/Leaflet.heat/dist/leaflet-heat.js"></script>
   <title>Debbie Brasier - Assignments</title>
 </head>
 
@@ -34,10 +43,17 @@
         <h1>Geocoded addresses</h1>
         <form class="form-inline">
           <div class="form-group">
-            <label for="myAddress">Address</label>
-            <input type="text" class="form-control" size="50" id="myAddress"/>
+            <label for="field1">Category</label>
+            <input type="text" class="form-control" id="field1"/>
           </div>
-          <button type="button" id="geocode" class="btn btn-primary">Submit</button>
+          <div class="form-group">
+            <label for="field2">Title</label>
+            <input type="text" class="form-control" id="field2"/>
+          </div>
+          <div class="form-group">
+            <label for="field3">Description</label>
+            <input type="text" class="form-control" id="field3"/>
+          </div>
         </form><br/><br/>
         <div id="map"></div>
       </div>
@@ -50,56 +66,151 @@
 </body>
 <script>
   $(document).ready(function() {
-    var map = L.map('map').setView([43, -93], 12);
+    var userID = 'debbie2';
+    var responseURL = "https://indicator.extension.iastate.edu/z_cjs/teachingGIS/webGIS_17/studentFeaturesDB.php?userID=" + userID + "&theFunction=response";
+    console.log(responseURL);
+    var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    });
 
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-        maxZoom: 18
+    var map = L.map('map').setView([41.6851046,-93.6651903], 11);
+    osm.addTo(map);
+    map.on('click', addMarker);
+
+    //Add the marker to the map and DB
+    function addMarker(e) {
+      field1 = $("#field1").val();
+      field2 = $("#field2").val();
+      field3 = $("#field3").val();
+      // Add marker to map at click location; add popup window
+      var newMarker = new L.marker(e.latlng)
+        .bindPopup("<strong>" + field2 + "</strong><br>" + field3)
+        .bindTooltip(field1)
+        .addTo(map);
+
+    latitude = e.latlng.lat;
+    longitude = e.latlng.lng;	
+
+    var myData = "field1="+field1+"&field2=" + field2 + "&field3=" + field3 + "&latitude="+latitude+ "&longitude="+longitude;
+
+        jQuery.ajax({
+          type: "POST", // HTTP method POST or GET
+          url: "https://indicator.extension.iastate.edu/z_cjs/teachingGIS/webGIS_17/studentFeaturesDB.php?userID=" + userID + "&theFunction=insert", //Where to make Ajax calls
+          dataType: "text", // Data type, HTML, json etc.
+          data: myData, //Form variables
+          success: function(response) {
+            //console.log(response);
+
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            console.log(thrownError);
+          }
+        }); //end ajax post
+    }
+    //Load existing points as circles from var locations. This is initially loaded in a <head><script>
+    var geojsonLayer1 = L.geoJSON(locations, {
+      pointToLayer: function(feature, latlng) {
+        return L.circleMarker(latlng, {
+          radius: 5,
+          fillColor: "yellow",
+          color: "#000",
+          weight: 1,
+          opacity: 1,
+          fillOpacity: 0.8
+        }).bindPopup(feature.properties.field1).openPopup();
+      }
     }).addTo(map);
 
-    //$('#myAddress').val('920 Timberline Dr, Polk City, IA 50226');
-    $('#myAddress').focus();
+    //*******OR directly via the Leaflet AJAX plugin**************
+    var geojsonLayer2 = new L.GeoJSON.AJAX(responseURL, {
+      pointToLayer: function(feature, latlng) {
+        return new L.CircleMarker(latlng, {
+          stroke: true,
+          weight: 2, //stroke weight
+          color: '#000000', //stroke color
+          opacity: 1.0, //stoke opacity
+          fillColor: 'blue',
+          fillOpacity: 0.5,
+          radius: 12
+        }).bindPopup(feature.properties.field2).openPopup();
+      }
+    });
 
-    $('#geocode').click(function () {
-        myAddress = encodeURI($('#myAddress').val());
+    //*******OR as icons**************
+    var targetIcon = L.AwesomeMarkers.icon({
+      prefix: 'fa',
+      markerColor: 'red',
+      icon: 'fa-bullseye'
+    });
+    
+    var restaurantIcon = L.AwesomeMarkers.icon({
+      prefix: 'fa',
+      markerColor: 'black',
+      icon: 'fa-cutlery'
+    });
+    
+    var personalIcon = L.AwesomeMarkers.icon({
+      prefix: 'fa',
+      markerColor: 'blue',
+      icon: 'fa-user'
+    });
+    
+    var defaultIcon = L.AwesomeMarkers.icon({
+      prefix: 'fa',
+      markerColor: 'green',
+      icon: 'fa-asterisk'
+    });
 
-        var geocodingAPI_URL = "https://maps.googleapis.com/maps/api/geocode/json?address=" + myAddress + "&sensor=true";
+    // var version loading in specified icons
+    var geojsonLayer1b = L.geoJSON(locations, {
+      pointToLayer: function(feature, latlng) {
+        return L.marker(latlng, {
+        icon: defaultIcon
+      })
+    .on('mouseover', function() {  this.bindPopup(feature.properties.field1).openPopup();
+          });
+      }
+    });
 
-        console.log(geocodingAPI_URL);
+    function getIcon(d) {
+      return d == 'shopping' ? targetIcon :
+        d == 'restaurant' ? restaurantIcon :
+        d == 'personal' ? personalIcon :
+        defaultIcon;
+    }
 
-        $.getJSON(geocodingAPI_URL, function (json) {
-            var address = json.results[0].formatted_address;
-            var lat = json.results[0].geometry.location.lat;
-            var long = json.results[0].geometry.location.lng;
-            console.log(address);
-            console.log(lat);
-            console.log(long);
-            var county = '';
-            var township = '';
-            var popupText = '';
-            $.each(json.results[0].address_components, function (i, jsonData) {
-                level = jsonData.types[0];
-                if ('administrative_area_level_2' === level.toLowerCase()) {
-                    county = (jsonData.short_name);
-                }
-                if ('administrative_area_level_3' === level.toLowerCase()) {
-                    township = (jsonData.short_name);
-                }
-            });
-            var marker = L.marker([lat, long], {
-                draggable: false,
-                title: address,
-                opacity: 0.75
-            }).addTo(map);
-            popupText = "<strong>County:</strong> " + county + "<br/>";
-            popupText = popupText + "<strong>Township:</strong> " + township + "<br/>";
-            popupText = popupText + "<strong>Latitude:</strong> " + lat + "<br/>";
-            popupText = popupText + "<strong>Longitude:</strong> " + long;
-            marker.bindPopup(popupText).openPopup();
-
-            map.setView([lat, long]);
+    var geojsonLayer2b = new L.GeoJSON.AJAX(responseURL, {
+      pointToLayer: function(feature, latlng) {
+        return L.marker(latlng, {
+        icon: getIcon(feature.properties.field1)
+      })
+    .on('mouseover', function() {  this.bindPopup("<strong>"+feature.properties.field2+"</strong><br>"+feature.properties.field3).openPopup();
         });
-      }); //end geocode click function
+      }
+    }).addTo(map);
+    
+    url = "https://debbers.github.io/LA558/data/iowa-border.json";
+
+    var iowaBorderLayer = new L.GeoJSON.AJAX(url , {
+      style: style,
+    }).addTo(map);
+
+    //******************
+    //layer Control
+
+    var baseMaps = {
+      "OSM": osm,
+    };
+
+    var overlayMaps = {
+      "Loaded as variable": geojsonLayer1,
+      "Loaded as variable & icons": geojsonLayer1b,
+      "Loaded with plugin": geojsonLayer2,
+       "Loaded with plugin & icons": geojsonLayer2b
+    };
+
+    L.control.layers(baseMaps, overlayMaps).addTo(map);
+    
   })
 
 </script>
