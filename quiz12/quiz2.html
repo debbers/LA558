@@ -69,23 +69,24 @@ var x = d.getTime();
   console.log(x);
 document.getElementById("demo").innerHTML=x;
   
-x = 42.54493
+x = 42.55493
 console.log((x));
 console.log(x.toFixed(2));
   
   
-  url = "quiz2data.json";
-  var geojsonLayer = new L.GeoJSON.AJAX(url , {
-      onEachFeature: function (feature, layer) {
-            htmlText = "<strong>" + feature.properties.NAME+ "</strong><br>Census area: " + feature.properties.CENSUSAREA;
-            layer.bindPopup(htmlText);
-        layer.bindTooltip(feature.properties.NAME);
-        }
-    });
+  url = "https://debbers.github.io/LA558/quiz12/quiz2data.json";
+  //var data = $.getJSON(url);
+  var data = $.getJSON(url, function(data) {
+    console.log( "success" );
+  })
+  //console.log(data);
+  //var data = new L.GeoJSON.AJAX(url);
 	 
-	 myTemp = "climate_daily_high_f";
-	 $('#message').html(myTemp)
-    });
+	 myTemp = data.data[1].climate_daily_high_f;
+	 $('#message').html(myTemp);
+  
+    //$.getJSON(jsfile, function(stuff) {});
+
 </script>
 </body>
 </html>
