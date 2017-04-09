@@ -1,0 +1,74 @@
+{
+  "data": [
+    {
+      "daily_low_f": 15.999999999999954,
+      "climate_daily_low_f": 31.38338134765629,
+      "climate_daily_high_f": 55.18756835937504,
+      "date": "2013-04-01",
+      "daily_precip_in": 0,
+      "mrms_precip_in": 0,
+      "daily_high_f": 40.00000000000002,
+      "climate_daily_precip_in": 0.08102309985423652
+    },
+    {
+      "daily_low_f": 19.999999999999964,
+      "climate_daily_low_f": 31.535596923828166,
+      "climate_daily_high_f": 56.1465649414063,
+      "date": "2013-04-02",
+      "daily_precip_in": 0,
+      "mrms_precip_in": 0,
+      "daily_high_f": 50,
+      "climate_daily_precip_in": 0.08102309985423652
+    },
+    {
+      "daily_low_f": 26.000000000000036,
+      "climate_daily_low_f": 31.661939697265666,
+      "climate_daily_high_f": 56.2729077148438,
+      "date": "2013-04-03",
+      "daily_precip_in": 0,
+      "mrms_precip_in": 0,
+      "daily_high_f": 59.99999999999998,
+      "climate_daily_precip_in": 0.08102309985423652
+    },
+    {
+      "daily_low_f": 32.99999999999998,
+      "climate_daily_low_f": 32.383411865234415,
+      "climate_daily_high_f": 57.14659545898442,
+      "date": "2013-04-04",
+      "daily_precip_in": 0,
+      "mrms_precip_in": 0.01968503937007874,
+      "daily_high_f": 60.99999999999996,
+      "climate_daily_precip_in": 0.08102309985423652
+    },
+    {
+      "daily_low_f": 28.999999999999964,
+      "climate_daily_low_f": 32.62099121093754,
+      "climate_daily_high_f": 57.27293823242192,
+      "date": "2013-04-05",
+      "daily_precip_in": 0,
+      "mrms_precip_in": 0,
+      "daily_high_f": 63.999999999999986,
+      "climate_daily_precip_in": 0.0818767510061189
+    },
+    {
+      "daily_low_f": 36.999999999999986,
+      "climate_daily_low_f": 33.38338745117191,
+      "climate_daily_high_f": 58.14657104492191,
+      "date": "2013-04-06",
+      "daily_precip_in": 0.04085466331677644,
+      "mrms_precip_in": 0.04921259842519685,
+      "daily_high_f": 69.99999999999996,
+      "climate_daily_precip_in": 0.08228643672672782
+    },
+    {
+      "daily_low_f": 28.4,
+      "climate_daily_low_f": 33.38338745117191,
+      "climate_daily_high_f": 58.27291381835941,
+      "date": "2013-04-07",
+      "daily_precip_in": 0.0750209253252022,
+      "mrms_precip_in": 0.05905511811023623,
+      "daily_high_f": 67.00000000000003,
+      "climate_daily_precip_in": 0.08318743367833416
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Quiz2</title>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/jquery-ui.min.js"></script>
+    
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.css" />
+	<script src="https://indicator.extension.iastate.edu/classes/leaflet-ajax-gh-pages/dist/leaflet.ajax.min.js"></script>
+ <!--[if lte IE 8]>
+     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.ie.css" />
+ <![endif]-->
+<style type="text/css">
+html, body {
+    width:100%;
+    height: 100%, margin:0;
+    padding:0;
+}
+</style>
+
+  <script src="quizData.js"></script>
+</head>
+
+<body>
+<div id="myMap" style="width:800px;height:500px;"></div>
+<div id='myMessage'>Your text here</div>
+<div id="demo"></div>
+<div id='message'>--result appears here--</div>
+
+<script src="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.js"></script>
+
+<script>
+// create a map
+map = new L.Map('myMap');
+
+// create the OpenStreetMap layer
+osmTile = "http://tile.openstreetmap.org/{z}/{x}/{y}.png";
+osmCopyright = "Map data &copy; 2012 OpenStreetMap contributors";
+osmLayer = new L.TileLayer(osmTile, {
+    maxZoom: 18,
+    attribution: osmCopyright
+});
+map.addLayer(osmLayer);
+map.doubleClickZoom.enable();
+
+// set the map's starting view
+map.setView([42.0259466,-93.6965886],7)
+
+//console.log(quizData.properties[0].attributes.hSchools)
+console.log (quizData[0].properties.attributes.hSchools);
+  
+
+
+var myClass = "LA 558";
+$("#myMessage").html(myClass);
+  
+firstname = "Fred";
+lastName = "Flintstone";
+
+var fullName = firstname + " " + lastName;
+console.log(fullName);
+  
+var d = new Date();
+var x = d.getTime();
+  console.log(d);
+  console.log(x);
+document.getElementById("demo").innerHTML=x;
+  
+x = 42.54493
+console.log((x));
+console.log(x.toFixed(2));
+  
+  
+  url = "quiz2data.json";
+  var geojsonLayer = new L.GeoJSON.AJAX(url , {
+      onEachFeature: function (feature, layer) {
+            htmlText = "<strong>" + feature.properties.NAME+ "</strong><br>Census area: " + feature.properties.CENSUSAREA;
+            layer.bindPopup(htmlText);
+        layer.bindTooltip(feature.properties.NAME);
+        }
+    });
+	 
+	 myTemp = "climate_daily_high_f";
+	 $('#message').html(myTemp)
+    });
+</script>
+</body>
+</html>
