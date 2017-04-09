@@ -1,0 +1,69 @@
+.navbar {
+  background-color: #00ACC1;
+}
+.navbar-brand {
+  color: #ffffff !important;
+}
+footer {
+  text-align: center;
+}
+.text-center {
+  text-align: center;
+}
+#map {
+  width: 100%;
+  height: 300px;
+  border: 1px solid #ccc;
+}
+section {
+  padding: 20px;
+}
+.my-div-icon {
+  background-color: orange;
+  color: #ffffff;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 8px;
+}
+
+.legend {
+  line-height: 10px;
+  color: #555;
+}
+.legend i {
+  width: 18px;
+  height: 20px;
+  float: left;
+  margin-right: 8px;
+  opacity: 0.9;
+}
+.info {
+  padding: 6px 8px;
+  font: 10px/20px Arial, Helvetica, sans-serif;
+  background: rgba(255,255,255,0.8);
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  border-radius: 5px;
+
+}
+.info h4 {
+  margin: 0 0 5px;
+  color: #777;
+}
+div.btn-group {
+  padding-top: 30px;
+}
+.text-center {
+  text-align: center !important;
+}
+.panel-primary .panel-heading, .btn-primary {
+  background-color: #9C27B0;
+}
+.panel-primary {
+  border-color: #9C27B0;
+}
+.btn-primary {
+  border-color: #9C27B0;
+}
+.btn-primary:hover, .btn-primary:active, .btn-primary:focus, .btn-primary:visited {
+  background-color: #7B1FA2;
+}
