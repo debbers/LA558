@@ -12,7 +12,9 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
   <script src="https://indicator.extension.iastate.edu/classes/leaflet-ajax-gh-pages/dist/leaflet.ajax.min.js"></script>
-
+  
+  <link href="../classes/Leaflet.awesome-markers/leaflet.awesome-markers.css" rel="stylesheet">
+  <script type="text/javascript" src="../classes/Leaflet.awesome-markers/leaflet.awesome-markers.js"></script>
   <title>Debbie Brasier - Assignments</title>
 </head>
 
@@ -38,7 +40,7 @@
               <form class="form">
                 <div class="form-group">
                   <label for="city">Enter a city and state abbreviation</label>
-                  <input type="text" class="form-control" id="city" value="Polk City, IA">
+                  <input type="text" class="form-control" id="city" value="">
                 </div>
                 <button type="button" class="btn btn-primary" id="checkWeather">Check weather</button>
               </form>
@@ -47,7 +49,7 @@
           <div class="col-md-8">
             <div class="weather">
               <div class="currentweather">
-                <i class="" id="weathericon"></i>
+                <i class="fa" id="weathericon"></i>
                 <span id="temperature"></span>
               </div>
               <div id="citystate"></div>
@@ -77,12 +79,16 @@
       attribution: 'LA558',
       maxZoom: 18
     });
-    var OpenWeatherMap_Clouds = L.tileLayer('http://{s}.tile.openweathermap.org/map/clouds/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: 'Map data &copy; <a href="http://openweathermap.org">OpenWeatherMap</a>',
-      opacity: 0.5
+    var NASAGIBS_ViirsEarthAtNight2012 = L.tileLayer('http://map1.vis.earthdata.nasa.gov/wmts-webmerc/VIIRS_CityLights_2012/default/{time}/{tilematrixset}{maxZoom}/{z}/{y}/{x}.{format}', {
+      attribution: 'Imagery provided by services from the Global Imagery Browse Services (GIBS), operated by the NASA/GSFC/Earth Science Data and Information System (<a href="https://earthdata.nasa.gov">ESDIS</a>) with funding provided by NASA/HQ.',
+      bounds: [[-85.0511287776, -179.999999975], [85.0511287776, 179.999999975]],
+      minZoom: 1,
+      maxZoom: 8,
+      format: 'jpg',
+      time: '',
+      tilematrixset: 'GoogleMapsCompatible_Level'
     });
-     var NASAGIBS_ModisTerraLSTDay = L.tileLayer('http://map1.vis.earthdata.nasa.gov/wmts-webmerc/MODIS_Terra_Land_Surface_Temp_Day/default/{time}/{tilematrixset}{maxZoom}/{z}/{y}/{x}.{format}', {
+    var chlor = L.tileLayer('http://map1.vis.earthdata.nasa.gov/wmts-webmerc/MODIS_Terra_Chlorophyll_A/default/{time}/{tilematrixset}{maxZoom}/{z}/{y}/{x}.{format}', {
       attribution: 'Imagery provided by services from the Global Imagery Browse Services (GIBS), operated by the NASA/GSFC/Earth Science Data and Information System (<a href="https://earthdata.nasa.gov">ESDIS</a>) with funding provided by NASA/HQ.',
       bounds: [[-85.0511287776, -179.999999975], [85.0511287776, 179.999999975]],
       minZoom: 1,
@@ -102,11 +108,11 @@
     // Layer control
     var baseMaps = {
       "OpenStreetMap": osm,
+      "Earth at Night": NASAGIBS_ViirsEarthAtNight2012
     };
 
     var overlayMaps = {
-      "Weather": NASAGIBS_ModisTerraLSTDay,
-      "Cloud Cover": OpenWeatherMap_Clouds,
+      "Chlorophyll": chlor
     };
 
     L.control.layers(baseMaps, overlayMaps).addTo(myMap);
@@ -121,15 +127,15 @@
         console.log('weather data received for ' + data.name + " ("+ mainWeather + ")");
         var weatherIcon;
         if (mainWeather == "Clear") {
-          weatherIcon = "fa fa-sun-o";
+          weatherIcon = "fa-sun-o";
         } else if (mainWeather == "Snow") {
-          weatherIcon = "fa fa-snowflake-o";
+          weatherIcon = "fa-snowflake-o";
         } else if (mainWeather == "Rain") {
-          weatherIcon = "fa fa-shower";
+          weatherIcon = "fa-shower";
         } else {
-          weatherIcon = "fa fa-cloud";
+          weatherIcon = "fa-cloud";
         }
-        $("#weathericon").removeClass().addClass(weatherIcon);
+        $("#weathericon").removeClass().addClass("fa " + weatherIcon);
         temp = Math.round(data.main.temp);
         $("#temperature").html(temp + "&deg;");
         $("#citystate").html(data.name);
@@ -138,37 +144,35 @@
         $("#wind").html("<strong>WIND</strong> " + data.wind.speed + " MPH");
 
         myMap.removeLayer(marker);
-        /*marker = L.marker([data.coord.lat, data.coord.lon], {
-          draggable: false,
-          title: data.name,
-          opacity: 0.75,
-        }).addTo(myMap).bindPopup("Current Weather: " + data.weather[0].description + "<br>Temp: " + data.main.temp + "&deg;F");
-        */
+        
+        
         
         // Marker changes color based on temperature
         var markerColor;
-        if (temp >= 90) {
-          markerColor = "E91E63";
+        if (temp >= 80) {
+          markerColor = "red";
         } else if (temp >= 75) {
-          markerColor = "FF9800";
-        } else if (temp >= 60) {
-          markerColor = "FFEB3B";
-        } else if (temp >= 40) {
-          markerColor = "8BC34A";
+          markerColor = "orange";
+        } else if (temp >= 65) {
+          markerColor = "green";
+        } else if (temp >= 55) {
+          markerColor = "blue";
         } else {
-          markerColor = "03A9F4";
+          markerColor = "purple";
         }
-        var customIcon = L.icon({
-          iconUrl: 'http://www.googlemapsmarkers.com/v1/' + markerColor,
-          iconSize:     [21, 34],
-          iconAnchor:   [10, 34],
-          popupAnchor:  [0, -34]
+        console.log(markerColor);
+        var defaultIcon = L.AwesomeMarkers.icon({
+          prefix: 'fa',
+          markerColor: markerColor,
+          icon: weatherIcon
         });
-        var marker2 = L.marker([data.coord.lat, data.coord.lon], {
-          icon: customIcon,
+        
+        var marker3 = L.marker([data.coord.lat, data.coord.lon], {
+          icon: defaultIcon,
           title: data.name,
-          opacity: 0.75,
         }).addTo(myMap).bindPopup("Current Weather: " + data.weather[0].description + "<br>Temp: " + temp + "&deg;F");
+        
+        myMap.setView([data.coord.lat, data.coord.lon]);
 
       });
     });
