@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="description" content="Debbie Brasier - Assignments">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <!-- CSS files -->
+  <link rel="stylesheet" type="text/css" href="../classes/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/assignment.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <!--link href="../classes/Leaflet.awesome-markers/leaflet.awesome-markers.css" rel="stylesheet"-->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+  <!--link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.css" /-->
+  <!-- JS files -->
+  <script type="text/javascript" src="../classes/jquery/jquery-3.1.1.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+  <!--script type="text/javascript" src="../classes/Leaflet.awesome-markers/leaflet.awesome-markers.js"></script>
+  <script src="https://indicator.extension.iastate.edu/classes/leaflet-ajax-gh-pages/dist/leaflet.ajax.min.js"></script-->
+  <!--script src="https://leaflet.github.io/Leaflet.markercluster/dist/leaflet.markercluster-src.js"></script-->
+  <!--script	 src="https://leaflet.github.io/Leaflet.heat/dist/leaflet-heat.js"></script-->
+  <title>Debbie Brasier - Assignments</title>
+</head>
+
+<body>
+  <header role="banner">
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <div class="navbar-brand" href="#">
+            Debbie Brasier <em>Assignment 23</em>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <section>
+    <div class="row">
+      <div class="col-md-12">
+        <h1>Non-georeferenced raster maps</h1>
+        <div id="map"></div>
+      </div>
+    </div>
+  </section>
+  <footer>
+    Debbie Brasier
+    <br/> LA 558 | <a href="../index.html">Web Mapping 2017</a>
+  </footer>
+</body>
+<script>
+  $(document).ready(function() {
+    var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom: 18
+    });
+    var disney = L.tileLayer('http://mapwarper.net/maps/tile/20204/{z}/{x}/{y}.png', {
+        attribution: 'Map Warper',
+        maxZoom: 18
+    });
+    var map = L.map('map', {
+        center: new L.LatLng(28.3728408,-81.5809563),
+        zoom: 12,
+        layers: [osm,disney]
+    });
+
+    // Layer control
+    var baseMaps = {
+      "OpenStreetMap": osm
+    };
+
+    var overlayMaps = {
+      "Disney Resort Transit": disney
+    };
+
+    L.control.layers(baseMaps, overlayMaps).addTo(map);
+    
+  })
+
+</script>
+
+</html>
