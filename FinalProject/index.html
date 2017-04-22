@@ -49,17 +49,16 @@
               <div class="panel-body">
                 <label for="neighborhoods">Filter by neighborhoods</label><br/>
                 <select id="neighborhoods">
-                  <option value="ALL" selected>All neighborhoods</option>
-                  <option value="2017">2017</option>
+                  <option value="ALL" selected>* All neighborhoods *</option>
                 </select>
               </div>
             </div>
             <div class="panel panel-primary">
-              <div class="panel-heading">Crimes</div>
+              <div class="panel-heading">Crimes 2001 to present</div>
               <div class="panel-body">
                 <label for="sexOffenderGender">Filter by year</label><br/>
                 <select id="sexOffenderGender">
-                  <option value="ALL" selected>2001 to present</option>
+                  <option value="ALL" selected>* All years *</option>
                   <option value="2017">2017</option>
                   <option value="2016">2016</option>
                   <option value="2015">2015</option>
@@ -85,13 +84,13 @@
               <div class="panel-body">
                 <label for="sexOffenderGender">Filter by gender</label><br/>
                 <select id="sexOffenderGender">
-                  <option value="ALL" selected>All genders</option>
+                  <option value="ALL" selected>* All genders *</option>
                   <option value="MALE">Male</option>
                   <option value="FEMALE">Female</option>
                 </select><br/><br/>
                 <label for="sexOffenderVictim">Filter by victim type</label><br/>
                 <select id="sexOffenderVictim">
-                  <option value="ALL" selected>All victims</option>
+                  <option value="ALL" selected>* All victims *</option>
                   <option value="Y">Minor</option>
                   <option value="N">Adult</option>
                 </select>
@@ -168,6 +167,43 @@
           1: 'red'
       }
     });
+    
+    function alphabetizeNeighborhoods() {
+        var options = $('select#neighborhoods option');
+        var arr = options.map(function(_, o) {
+            return {
+                t: $(o).text(),
+                v: o.value
+            };
+        }).get();
+        arr.sort(function(o1, o2) {
+            return o1.t > o2.t ? 1 : o1.t < o2.t ? -1 : 0;
+        });
+        options.each(function(i, o) {
+            //console.log(i);
+            o.value = arr[i].v;
+            $(o).text(arr[i].t);
+        });
+    }
+    
+    neighborhoods = "https://debbers.github.io/LA558/data/chicagoNeighborhoods.geojson";
+    var neighborhoodStyle = {
+      "color": "#374C70",
+      weight: 0.5,
+      opacity: 1,
+      dashArray: '2',
+      fillOpacity: 0.4,
+    };
+    var neighborhoodLayer = new L.GeoJSON.AJAX(neighborhoods , {
+      style: neighborhoodStyle,
+      onEachFeature: function (feature, layer) {
+            htmlText = feature.properties.community;
+            layer.bindPopup(htmlText);
+            $('#neighborhoods').append("<option id=" + feature.properties.objectid + ">" + feature.properties.community + "</option>");
+            alphabetizeNeighborhoods();
+        layer.bindTooltip(feature.properties.community);
+        }
+    });
 
     var baseMaps = {
       "Basic Map": CartoDB_Positron,
@@ -176,7 +212,8 @@
     var overlayMaps = {
       "Single markers": singleMarkers,
       "Cluster": markers,
-      "Heat Map": heatMap
+      "Heat Map": heatMap,
+      "Neighborhoods": neighborhoodLayer,
 
     };
     L.control.layers(baseMaps, overlayMaps).addTo(map);
