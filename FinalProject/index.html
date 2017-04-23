@@ -212,7 +212,7 @@
       weight: 0.5,
       opacity: 1,
       dashArray: '2',
-      fillOpacity: 0.7,
+      fillOpacity: 0.4,
     };
     var neighborhoodLayer = new L.GeoJSON.AJAX(neighborhoods , {
       style: neighborhoodStyle,
@@ -248,6 +248,8 @@
         neighborhoodLayer.eachLayer(function (layer) {
           layer.setStyle(neighborhoodStyle)
         });
+        //map.setView([41.8400427,-87.7314751],10);
+        $("#neighborhoods").val("ALL");
       }
     });
 
@@ -261,10 +263,34 @@
     
     $("#neighborhoods").change(function() {
       var n = $("#neighborhoods").val();
+      //console.log(n);
+      if (n == "ALL") {
+        map.setView([41.8400427,-87.7314751],10);
+      }
       //highlight current selection
       neighborhoodLayer.eachLayer(function (layer) {
         if(layer.feature.properties.community == n) {
           layer.setStyle(neighborhoodStyleHighlight)
+          //https://gis.stackexchange.com/questions/36855/auto-zoom-on-multipolygon-with-leaflet
+          if ( layer.feature.geometry.type === "MultiPolygon" ) {
+            // get the bounds for the first polygon that makes up the multipolygon
+            var bounds = layer.getBounds();
+            // loop through coordinates array
+            // skip first element as the bounds var represents the bounds for that element
+            for ( var i = 1, il = layer.feature.geometry.coordinates[0].length; i < il; i++ ) {
+              var ring = layer.feature.geometry.coordinates[0][i];
+              var latLngs = ring.map(function(pair) {
+                return new L.LatLng(pair[1], pair[0]);
+              });
+              var nextBounds = new L.LatLngBounds(latLngs);
+              bounds.extend(nextBounds);
+            }
+            map.fitBounds(bounds);
+          }
+          if (layer.feature.properties && layer.feature.properties.popupContent) {
+            popupContent += layer.feature.properties.popupContent;
+          }
+          layer.bindPopup(n);
         } else {
           layer.setStyle(neighborhoodStyle)
         }
