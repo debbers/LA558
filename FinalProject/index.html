@@ -180,6 +180,7 @@
       }
     });
     
+    $('#neighborhoods').select2();
     function alphabetizeNeighborhoods() {
         var options = $('select#neighborhoods option');
         var arr = options.map(function(_, o) {
@@ -200,11 +201,18 @@
     
     neighborhoods = "https://debbers.github.io/LA558/data/chicagoNeighborhoods.geojson";
     var neighborhoodStyle = {
-      "color": "#374C70",
+      "color": "#3F51B5",
       weight: 0.5,
       opacity: 1,
       dashArray: '2',
-      fillOpacity: 0.4,
+      fillOpacity: 0.3,
+    };
+    var neighborhoodStyleHighlight = {
+      "color": "#E040FB",
+      weight: 0.5,
+      opacity: 1,
+      dashArray: '2',
+      fillOpacity: 0.7,
     };
     var neighborhoodLayer = new L.GeoJSON.AJAX(neighborhoods , {
       style: neighborhoodStyle,
@@ -213,10 +221,15 @@
             layer.bindPopup(htmlText);
             $('#neighborhoods').append("<option id=" + feature.properties.objectid + ">" + feature.properties.community + "</option>");
             alphabetizeNeighborhoods();
-        layer.bindTooltip(feature.properties.community);
+            // Identify the id - temporary
+            layer.on('click', function (e) {
+              console.log(e.target.feature.properties.objectid);
+            });
         }
     });
-    $('#neighborhoods').select2();
+    function onEachFeature(feature, layer){
+      polygons[feature.properties.community] = layer;
+    }
 
     var baseMaps = {
       "Basic Map": CartoDB_Positron,
@@ -232,6 +245,9 @@
     map.on('layerremove', function(event) {
       if(event.layer == neighborhoodLayer) {
         $('#neighborhoodPanel').hide();
+        neighborhoodLayer.eachLayer(function (layer) {
+          layer.setStyle(neighborhoodStyle)
+        });
       }
     });
 
@@ -243,16 +259,16 @@
 
     L.control.layers(baseMaps, overlayMaps).addTo(map);
     
-    
     $("#neighborhoods").change(function() {
-//      for (var i = 0; i < neighborhoods.length; i++) {
-//        var a = neighborhoods[i];
-//        var neighborhoodID = a[feature.properties.objectid];
-//        if (neighborhoodID == $(this).val()) {
-//          console.log("it's a match");
-//          //map.setView([x,y],7)
-//        }
-//      }
+      var n = $("#neighborhoods").val();
+      //highlight current selection
+      neighborhoodLayer.eachLayer(function (layer) {
+        if(layer.feature.properties.community == n) {
+          layer.setStyle(neighborhoodStyleHighlight)
+        } else {
+          layer.setStyle(neighborhoodStyle)
+        }
+      });
     });
 
 })
