@@ -24,6 +24,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
   
   <script src="../data/sexoffenders.js"></script>
+  <script src="../data/chicagoPoliceStations.js"></script>
   <title>Debbie Brasier - Final Project</title>
 </head>
 
@@ -155,7 +156,6 @@
       markers.addLayer(marker);
       singleMarkers.addLayer(marker);
     }
-    //map.addLayer(singleMarkers);
     
     // Heat map code
     var myArray = [];
@@ -233,6 +233,29 @@
     function onEachFeature(feature, layer){
       polygons[feature.properties.community] = layer;
     }
+    
+    
+    var policeIcon = L.AwesomeMarkers.icon({
+      prefix: 'fa',
+      markerColor: 'blue',
+      icon: 'fa-taxi'
+    });
+    var policeMarkers = L.layerGroup([]);
+    for (var i = 0; i < policeStations.length; i++) {
+      popupContent = "<strong>" + policeStations[i][0] + " Police Station</strong><br/>" + policeStations[i][1] + "<br/>" + policeStations[i][2] + " " + policeStations[i][3] + ", " + policeStations[i][4] + "<br/><a href='" + policeStations[i][5] + "' target='_blank'>Website</a><br/>Phone: " + policeStations[i][6];
+      marker = new L.marker([policeStations[i][9],policeStations[i][10]], {
+        icon: policeIcon,
+        title: policeStations[i][0] + " Police Station",
+      })
+      .bindPopup(popupContent)
+      policeMarkers.addLayer(marker);
+    }
+    
+    
+    
+    
+    
+    
 
     var baseMaps = {
       "Basic Map": CartoDB_Positron,
@@ -240,6 +263,7 @@
     };
     var overlayMaps = {
       "Neighborhoods": neighborhoodLayer,
+      "Police stations": policeMarkers,
       "All sex offenders": singleMarkers,
       "Clusters of sex offenders": markers,
       "Heat map of sex offenders": heatMap,
