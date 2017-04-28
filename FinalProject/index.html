@@ -9,19 +9,8 @@
   <link rel="stylesheet" type="text/css" href="../classes/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="css/assignment.css">
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="../classes/Leaflet.awesome-markers/leaflet.awesome-markers.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
-  <link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.css" />
-  <link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.css" />
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
   <!-- JS files -->
   <script type="text/javascript" src="../classes/jquery/jquery-3.1.1.min.js"></script>
-  <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
-  <script type="text/javascript" src="../classes/Leaflet.awesome-markers/leaflet.awesome-markers.js"></script>
-  <script src="https://indicator.extension.iastate.edu/classes/leaflet-ajax-gh-pages/dist/leaflet.ajax.min.js"></script>
-  <script src="https://leaflet.github.io/Leaflet.markercluster/dist/leaflet.markercluster-src.js"></script>
-  <script	 src="https://leaflet.github.io/Leaflet.heat/dist/leaflet-heat.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
   
   <script src="../data/sexoffenders.js"></script>
   <title>Debbie Brasier - Final Project</title>
@@ -41,76 +30,70 @@
   </header>
   <section>
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-8 col-sm-12 col-xs-12">
         <h1>Chicago Crime Tracker</h1>
-        <p>Map of historical crimes in Chicago, in order to show riskiest areas, in combination with neighborhoods and transit information.</p>
-        <div class="row">
-          <div class="col-md-4 col-sm-12 col-xs-12">
-            <div class="panel panel-primary">
-              <div class="panel-heading">Crimes 2001 to present</div>
-              <div class="panel-body">
-                <div class="form-group">
-                  <label for="sexOffenderGender">Filter by year</label><br/>
-                  <select class="form-control" id="sexOffenderGender">
-                    <option value="ALL" selected>* All years *</option>
-                    <option value="2017">2017</option>
-                    <option value="2016">2016</option>
-                    <option value="2015">2015</option>
-                    <option value="2014">2014</option>
-                    <option value="2013">2013</option>
-                    <option value="2012">2012</option>
-                    <option value="2011">2011</option>
-                    <option value="2010">2010</option>
-                    <option value="2009">2009</option>
-                    <option value="2008">2008</option>
-                    <option value="2007">2007</option>
-                    <option value="2006">2006</option>
-                    <option value="2005">2005</option>
-                    <option value="2004">2004</option>
-                    <option value="2003">2003</option>
-                    <option value="2002">2002</option>
-                    <option value="2001">2001</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-            <div class="panel panel-primary">
-              <div class="panel-heading">Sex Offenders</div>
-              <div class="panel-body">
-                <div class="form-group">
-                  <label for="sexOffenderGender">Filter by gender</label><br/>
-                  <select class="form-control" id="sexOffenderGender">
-                    <option value="ALL" selected>* All genders *</option>
-                    <option value="MALE">Male</option>
-                    <option value="FEMALE">Female</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="sexOffenderVictim">Filter by victim type</label><br/>
-                  <select class="form-control" id="sexOffenderVictim">
-                    <option value="ALL" selected>* All victims *</option>
-                    <option value="Y">Minor</option>
-                    <option value="N">Adult</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-            <div id="neighborhoodPanel" style="display: none;">
-              <div class="panel panel-primary">
-                <div class="panel-heading">Neighborhoods</div>
-                <div class="panel-body">
-                  <div class="form-group">
-                    <label for="neighborhoods">Filter by neighborhoods</label><br/>
-                    <select class="form-control" id="neighborhoods" style="width: 100%">
-                      <option value="ALL" selected>* All neighborhoods *</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-            </div>
+        
+        <p>My project will primarily map historical crimes in Chicago by using a couple of different sources of data. The first is simply a breakdown of crimes. The second is mapping out the locations of sex offenders, based on data from the sex offender registry.</p>
+        <p>To make this application of the data useful to residents and visitors of Chicago, I will also add layers for police stations, fire stations, parks and important transit stops. This will help people to better understand the risks of waiting for the bus or “L” in certain locations of Chicago.</p>
+        
+        <h2>Technology</h2>
+        <ul>
+          <li>Leaflet</li>
+          <li>Leaflet clusters</li>
+          <li>Leaflet heatmaps</li>
+          <li>Awesome markers</li>
+          <li>jQuery</li>
+          <li>JSON</li>
+          <li>Select2 (typeahead feature for dropdown menus)</li>
+        </ul>
+        
+        <h2>Data sources</h2>
+        <p>The City of Chicago provides a lot of data in JSON format on its website, data.cityofchicago.org. The Chicago Transit Authority also provides data on is services at transitchicago.com/data/.</p>
+        <p>I plan to use the following data sets, and potentially add to the list as I continue working on the final project:</p>
+        <ul>
+          <li><a href="https://catalog.data.gov/dataset/crimes-2001-to-present-398a4" target="_blank">Crimes – 2001 to present</a></li>
+          <li><a href="https://catalog.data.gov/dataset/sex-offenders-938b3" target="_blank">Sex Offenders</a></li>
+          <li><a href="https://catalog.data.gov/dataset/police-stations-3a3a8" target="_blank">Police Stations</a></li>
+          <li><a href="https://data.cityofchicago.org/Facilities-Geographic-Boundaries/Chicago-Zip-Code-and-Neighborhood-Map/mapn-ahfc/data" target="_blank">Neighborhoods</a></li>
+          <li><a href="http://www.transitchicago.com/data/" target="_blank">Transit information</a></li>
+        </ul>
+
+        <h2>Challenges</h2>
+        <p>Relying on someone else’s data that I don’t know is a huge challenge. Also, integrating all of this data together could be overly complex and cause the page to load very slowly.</p>
+
+        <p>The sex offender registry contains partially masked address information, instead of latitude and longitude information. I will need to do some amount of data conversion in that data file to ensure it works correctly in the final project. The main challenge I see with this file is the masking on the data, as it will be more difficult to ascertain the actual location.</p>
+
+        <h2>Journal of work</h2>
+        <ol>
+          <li>Sex Offender Registry Dataset
+            <ul>
+              <li>This had 1248 rows of data, but somewhat masked addresses so as not to give the exact addresses of the offenders (example: 054XX W THOMAS ST).</li>
+              <li>I initially tried <a href="http://www.freegeocoding.com/" target="_blank">freegeocoding.com</a> to get geocoded addresses, but this site kept mapping the data outside of Chicago, so I moved on to researching another bulk geo tool.</li>
+              <li>I then tried <a href="https://www.mapdevelopers.com/batch_geocode_tool.php" target="_blank">mapdevelopers.com</a> instead. I had to split data into groups of 100, but it worked really well, was fast and accurate.</li>
+              <li>Just a bit more scrubbing to translate the .csv file into the array I needed for my project.</li>
+              <li>I added this as a layer to the map.</li>
+            </ul>
+          </li>
+          <li>Chicago Neighborhoods
+            <ul>
+              <li>I was able to add a geojson file to show the shapes of the neighborhoods as a layer on my map.</li>
+              <li>The Neighborhoods panel with user controls in it only displays when the neighborhoods layer is turned on in the map.</li>
+              <li>While parsing the neighborhoods, I also populate a neighborhoods dropdown menu with the list of neighborhoods. I use jQuery to alphabetize this list.</li>
+              <li>Because there are so many neighborhoods, I use a jQuery library called select2 to allow the user to pick from the list or type to filter matches by neighborhood name.</li>
+              <li>When the user selects a particular neighborhood, that neighborhood is highlighted on the map. I also zoom in on the neighborhood that is selected from the dropdown. This was a challenging bit of code, but I think it makes the Crimer Tracker more useful for the user.</li>
+            </ul>
+          </li>
+        </ol>
+
+      </div>
+      <div class="col-md-4 col-sm-12 col-xs-12">
+        <div class="panel panel-primary">
+          <div class="panel-heading">Chicago Crime Tracker</div>
+          <div class="panel-body">
+            <p>Map of historical crimes in Chicago, in order to show riskiest areas, in combination with neighborhoods and transit information.</p>
           </div>
-          <div class="col-md-8 col-sm-12 col-xs-12">
-            <div id="map"></div>
+          <div class="panel-footer text-center">
+            <a href="crimetracker.html" class="btn btn-primary">Try the Crime Tracker!</a>
           </div>
         </div>
       </div>
@@ -123,181 +106,8 @@
 </body>
 <script>
   $(document).ready(function() {
-    latlng = L.latLng(41.8400427,-87.7314751);
-    var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-        maxZoom: 18,
-        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors, Points &copy 2012 LINZ'
-    });
-    var CartoDB_Positron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
-      subdomains: 'abcd',
-      maxZoom: 19
-    });
-    var map = L.map('map', {
-      center: latlng,
-      zoom: 10,
-      layers: [CartoDB_Positron]
-    });
-    
-    var markers = L.markerClusterGroup();
-    var singleMarkers = L.layerGroup([]);
 
-    for (var i = 0; i < sexOffenderPoints.length; i++) {
-      var a = sexOffenderPoints[i];
-      var title = a[0] + " " + a[1];
-      var marker = L.marker(new L.LatLng(a[12], a[13]), {
-        title: title
-      });
-      marker.bindPopup(title);
-      markers.addLayer(marker);
-      singleMarkers.addLayer(marker);
-    }
-    //map.addLayer(singleMarkers);
-    
-    // Heat map code
-    var myArray = [];
-    var max = 100;
-    var min = 1;
-    
-    for (var i = 0; i < sexOffenderPoints.length; i++) {
-      var a = sexOffenderPoints[i];
-      var x = a[12];
-      var y = a[13];
-      z = Math.floor(Math.random() * (max - min + 1)) + min;
-      myArray.push([x, y, z]);
-    }
-    //console.log(myArray);
-    var heatMap = L.heatLayer(myArray, {
-      minOpacity: 0.1,
-      maxZoom: 19,
-      max: 1.0,
-      radius: 25,
-      blur: 15,
-      gradient: {
-          0.2: 'yellow', 
-          0.65: 'lime', 
-          1: 'red'
-      }
-    });
-    
-    $('#neighborhoods').select2();
-    function alphabetizeNeighborhoods() {
-        var options = $('select#neighborhoods option');
-        var arr = options.map(function(_, o) {
-            return {
-                t: $(o).text(),
-                v: o.value
-            };
-        }).get();
-        arr.sort(function(o1, o2) {
-            return o1.t > o2.t ? 1 : o1.t < o2.t ? -1 : 0;
-        });
-        options.each(function(i, o) {
-            //console.log(i);
-            o.value = arr[i].v;
-            $(o).text(arr[i].t);
-        });
-    }
-    
-    neighborhoods = "https://debbers.github.io/LA558/data/chicagoNeighborhoods.geojson";
-    var neighborhoodStyle = {
-      "color": "#3F51B5",
-      weight: 0.5,
-      opacity: 1,
-      dashArray: '2',
-      fillOpacity: 0.3,
-    };
-    var neighborhoodStyleHighlight = {
-      "color": "#E040FB",
-      weight: 0.5,
-      opacity: 1,
-      dashArray: '2',
-      fillOpacity: 0.4,
-    };
-    var neighborhoodLayer = new L.GeoJSON.AJAX(neighborhoods , {
-      style: neighborhoodStyle,
-      onEachFeature: function (feature, layer) {
-            htmlText = feature.properties.community;
-            layer.bindPopup(htmlText);
-            $('#neighborhoods').append("<option id=" + feature.properties.objectid + ">" + feature.properties.community + "</option>");
-            alphabetizeNeighborhoods();
-            // Identify the id - temporary
-            layer.on('click', function (e) {
-              console.log(e.target.feature.properties.objectid);
-            });
-        }
-    });
-    function onEachFeature(feature, layer){
-      polygons[feature.properties.community] = layer;
-    }
-
-    var baseMaps = {
-      "Basic Map": CartoDB_Positron,
-      "Detailed Map": osm
-    };
-    var overlayMaps = {
-      "Single markers": singleMarkers,
-      "Cluster": markers,
-      "Heat Map": heatMap,
-      "Neighborhoods": neighborhoodLayer,
-
-    };
-    map.on('layerremove', function(event) {
-      if(event.layer == neighborhoodLayer) {
-        $('#neighborhoodPanel').hide();
-        neighborhoodLayer.eachLayer(function (layer) {
-          layer.setStyle(neighborhoodStyle)
-        });
-        //map.setView([41.8400427,-87.7314751],10);
-        $("#neighborhoods").val("ALL");
-      }
-    });
-
-    map.on('layeradd', function(event) {
-      if(event.layer == neighborhoodLayer) {
-        $('#neighborhoodPanel').show();
-      }
-    });
-
-    L.control.layers(baseMaps, overlayMaps).addTo(map);
-    
-    $("#neighborhoods").change(function() {
-      var n = $("#neighborhoods").val();
-      //console.log(n);
-      if (n == "ALL") {
-        map.setView([41.8400427,-87.7314751],10);
-      }
-      //highlight current selection
-      neighborhoodLayer.eachLayer(function (layer) {
-        if(layer.feature.properties.community == n) {
-          layer.setStyle(neighborhoodStyleHighlight)
-          //https://gis.stackexchange.com/questions/36855/auto-zoom-on-multipolygon-with-leaflet
-          if ( layer.feature.geometry.type === "MultiPolygon" ) {
-            // get the bounds for the first polygon that makes up the multipolygon
-            var bounds = layer.getBounds();
-            // loop through coordinates array
-            // skip first element as the bounds var represents the bounds for that element
-            for ( var i = 1, il = layer.feature.geometry.coordinates[0].length; i < il; i++ ) {
-              var ring = layer.feature.geometry.coordinates[0][i];
-              var latLngs = ring.map(function(pair) {
-                return new L.LatLng(pair[1], pair[0]);
-              });
-              var nextBounds = new L.LatLngBounds(latLngs);
-              bounds.extend(nextBounds);
-            }
-            map.fitBounds(bounds);
-          }
-          if (layer.feature.properties && layer.feature.properties.popupContent) {
-            popupContent += layer.feature.properties.popupContent;
-          }
-          layer.bindPopup(n);
-        } else {
-          layer.setStyle(neighborhoodStyle)
-        }
-      });
-    });
-
-})
+  })
 
 </script>
 

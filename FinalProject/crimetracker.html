@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="description" content="Debbie Brasier - Assignments">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <!-- CSS files -->
+  <link rel="stylesheet" type="text/css" href="../classes/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/assignment.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="../classes/Leaflet.awesome-markers/leaflet.awesome-markers.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+  <!-- JS files -->
+  <script type="text/javascript" src="../classes/jquery/jquery-3.1.1.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+  <script type="text/javascript" src="../classes/Leaflet.awesome-markers/leaflet.awesome-markers.js"></script>
+  <script src="https://indicator.extension.iastate.edu/classes/leaflet-ajax-gh-pages/dist/leaflet.ajax.min.js"></script>
+  <script src="https://leaflet.github.io/Leaflet.markercluster/dist/leaflet.markercluster-src.js"></script>
+  <script	 src="https://leaflet.github.io/Leaflet.heat/dist/leaflet-heat.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+  
+  <script src="../data/sexoffenders.js"></script>
+  <title>Debbie Brasier - Final Project</title>
+</head>
+
+<body>
+  <header role="banner">
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <div class="navbar-brand" href="#">
+            Debbie Brasier <em>Final Project</em>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <section>
+    <div class="row">
+      <div class="col-md-12">
+        <h1>Chicago Crime Tracker</h1>
+        <p>Map of historical crimes in Chicago, in order to show riskiest areas, in combination with neighborhoods and transit information.</p>
+        <div class="row">
+          <div class="col-md-4 col-sm-12 col-xs-12">
+            <div class="panel panel-primary">
+             
+            <div id="neighborhoodPanel">
+              <div class="panel panel-primary">
+                <div class="panel-heading">Neighborhoods</div>
+                <div class="panel-body">
+                  <div class="form-group">
+                    <label for="neighborhoods">Filter by neighborhoods</label><br/>
+                    <select class="form-control" id="neighborhoods" style="width: 100%">
+                      <option value="ALL" selected>* All neighborhoods *</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+             
+              <div class="panel-heading">Crimes 2001 to present</div>
+              <div class="panel-body">
+                <div class="form-group">
+                  <label for="sexOffenderGender">Filter by year</label><br/>
+                  <select class="form-control" id="sexOffenderGender">
+                    <option value="ALL" selected>* All years *</option>
+                    <option value="2017">2017</option>
+                    <option value="2016">2016</option>
+                    <option value="2015">2015</option>
+                    <option value="2014">2014</option>
+                    <option value="2013">2013</option>
+                    <option value="2012">2012</option>
+                    <option value="2011">2011</option>
+                    <option value="2010">2010</option>
+                    <option value="2009">2009</option>
+                    <option value="2008">2008</option>
+                    <option value="2007">2007</option>
+                    <option value="2006">2006</option>
+                    <option value="2005">2005</option>
+                    <option value="2004">2004</option>
+                    <option value="2003">2003</option>
+                    <option value="2002">2002</option>
+                    <option value="2001">2001</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            
+            <div class="panel panel-primary">
+              <div class="panel-heading">Sex Offenders</div>
+              <div class="panel-body">
+                <div class="form-group">
+                  <label for="sexOffenderGender">Filter by gender</label><br/>
+                  <select class="form-control" id="sexOffenderGender">
+                    <option value="ALL" selected>* All genders *</option>
+                    <option value="MALE">Male</option>
+                    <option value="FEMALE">Female</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="sexOffenderVictim">Filter by victim type</label><br/>
+                  <select class="form-control" id="sexOffenderVictim">
+                    <option value="ALL" selected>* All victims *</option>
+                    <option value="Y">Minor</option>
+                    <option value="N">Adult</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-8 col-sm-12 col-xs-12">
+            <div id="map"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer>
+    Debbie Brasier
+    <br/> LA 558 | <a href="../index.html">Web Mapping 2017</a>
+  </footer>
+</body>
+<script>
+  $(document).ready(function() {
+    latlng = L.latLng(41.8400427,-87.7314751);
+    var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors, Points &copy 2012 LINZ'
+    });
+    var CartoDB_Positron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+      subdomains: 'abcd',
+      maxZoom: 19
+    });
+    var map = L.map('map', {
+      center: latlng,
+      zoom: 10,
+      layers: [CartoDB_Positron]
+    });
+    
+    var markers = L.markerClusterGroup();
+    var singleMarkers = L.layerGroup([]);
+
+    for (var i = 0; i < sexOffenderPoints.length; i++) {
+      var a = sexOffenderPoints[i];
+      var title = a[0] + " " + a[1];
+      var marker = L.marker(new L.LatLng(a[12], a[13]), {
+        title: title
+      });
+      marker.bindPopup(title);
+      markers.addLayer(marker);
+      singleMarkers.addLayer(marker);
+    }
+    //map.addLayer(singleMarkers);
+    
+    // Heat map code
+    var myArray = [];
+    var max = 100;
+    var min = 1;
+    
+    for (var i = 0; i < sexOffenderPoints.length; i++) {
+      var a = sexOffenderPoints[i];
+      var x = a[12];
+      var y = a[13];
+      z = Math.floor(Math.random() * (max - min + 1)) + min;
+      myArray.push([x, y, z]);
+    }
+    //console.log(myArray);
+    var heatMap = L.heatLayer(myArray, {
+      minOpacity: 0.1,
+      maxZoom: 19,
+      max: 1.0,
+      radius: 25,
+      blur: 15,
+      gradient: {
+          0.2: 'yellow', 
+          0.65: 'lime', 
+          1: 'red'
+      }
+    });
+    
+    $('#neighborhoods').select2();
+    function alphabetizeNeighborhoods() {
+        var options = $('select#neighborhoods option');
+        var arr = options.map(function(_, o) {
+            return {
+                t: $(o).text(),
+                v: o.value
+            };
+        }).get();
+        arr.sort(function(o1, o2) {
+            return o1.t > o2.t ? 1 : o1.t < o2.t ? -1 : 0;
+        });
+        options.each(function(i, o) {
+            //console.log(i);
+            o.value = arr[i].v;
+            $(o).text(arr[i].t);
+        });
+    }
+    
+    neighborhoods = "https://debbers.github.io/LA558/data/chicagoNeighborhoods.geojson";
+    var neighborhoodStyle = {
+      "color": "#3F51B5",
+      weight: 0.5,
+      opacity: 1,
+      dashArray: '2',
+      fillOpacity: 0.3,
+    };
+    var neighborhoodStyleHighlight = {
+      "color": "#E040FB",
+      weight: 0.5,
+      opacity: 1,
+      dashArray: '2',
+      fillOpacity: 0.4,
+    };
+    var neighborhoodLayer = new L.GeoJSON.AJAX(neighborhoods , {
+      style: neighborhoodStyle,
+      onEachFeature: function (feature, layer) {
+            htmlText = feature.properties.community;
+            layer.bindPopup(htmlText);
+            $('#neighborhoods').append("<option id=" + feature.properties.objectid + ">" + feature.properties.community + "</option>");
+            alphabetizeNeighborhoods();
+            // Identify the id - temporary
+            layer.on('click', function (e) {
+              console.log(e.target.feature.properties.objectid);
+            });
+        }
+    }).addTo(map);
+    function onEachFeature(feature, layer){
+      polygons[feature.properties.community] = layer;
+    }
+
+    var baseMaps = {
+      "Basic Map": CartoDB_Positron,
+      "Detailed Map": osm
+    };
+    var overlayMaps = {
+      "Neighborhoods": neighborhoodLayer,
+      "All sex offenders": singleMarkers,
+      "Clusters of sex offenders": markers,
+      "Heat map of sex offenders": heatMap,
+
+    };
+    map.on('layerremove', function(event) {
+      if(event.layer == neighborhoodLayer) {
+        $('#neighborhoodPanel').hide();
+        neighborhoodLayer.eachLayer(function (layer) {
+          layer.setStyle(neighborhoodStyle)
+        });
+        map.setView([41.8400427,-87.7314751],10);
+        $("#neighborhoods").val("ALL");
+      }
+    });
+
+    map.on('layeradd', function(event) {
+      if(event.layer == neighborhoodLayer) {
+        $('#neighborhoodPanel').show();
+      }
+    });
+
+    L.control.layers(baseMaps, overlayMaps).addTo(map);
+    
+    $("#neighborhoods").change(function() {
+      var n = $("#neighborhoods").val();
+      //console.log(n);
+      if (n == "ALL") {
+        map.setView([41.8400427,-87.7314751],10);
+      }
+      //highlight current selection
+      neighborhoodLayer.eachLayer(function (layer) {
+        if(layer.feature.properties.community == n) {
+          layer.setStyle(neighborhoodStyleHighlight)
+          //https://gis.stackexchange.com/questions/36855/auto-zoom-on-multipolygon-with-leaflet
+          if ( layer.feature.geometry.type === "MultiPolygon" ) {
+            // get the bounds for the first polygon that makes up the multipolygon
+            var bounds = layer.getBounds();
+            // loop through coordinates array
+            // skip first element as the bounds var represents the bounds for that element
+            for ( var i = 1, il = layer.feature.geometry.coordinates[0].length; i < il; i++ ) {
+              var ring = layer.feature.geometry.coordinates[0][i];
+              var latLngs = ring.map(function(pair) {
+                return new L.LatLng(pair[1], pair[0]);
+              });
+              var nextBounds = new L.LatLngBounds(latLngs);
+              bounds.extend(nextBounds);
+            }
+            map.fitBounds(bounds);
+          }
+          if (layer.feature.properties && layer.feature.properties.popupContent) {
+            popupContent += layer.feature.properties.popupContent;
+          }
+          layer.bindPopup(n);
+        } else {
+          layer.setStyle(neighborhoodStyle)
+        }
+      });
+    });
+
+})
+
+</script>
+
+</html>
