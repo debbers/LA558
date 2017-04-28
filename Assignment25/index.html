@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="description" content="Debbie Brasier - Assignments">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <!-- CSS files -->
+  <link rel="stylesheet" type="text/css" href="../classes/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/assignment.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <script type="text/javascript" src="../classes/jquery/jquery-3.1.1.min.js"></script>
+  <link rel="stylesheet" href="https://js.arcgis.com/3.20/esri/css/esri.css">
+  <script src="https://js.arcgis.com/3.20/"></script>
+  <title>Debbie Brasier - Assignments</title>
+</head>
+
+<body>
+  <header role="banner">
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <div class="navbar-brand" href="#">
+            Debbie Brasier <em>Assignment 25</em>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <section>
+    <div class="row">
+      <div class="col-md-12">
+        <h1>ArcGIS JavaScript API</h1>
+        <h2>Limahuli O'Makana, Haena, Kauai, Hawaii</h2>
+        <p>This is where my husband and I were married in 2004.</p>
+        <div id="map"
+           data-dojo-type="dijit/layout/ContentPane"
+           data-dojo-props="region:'center'"
+           style="overflow:hidden;">
+          <div id="LocateButton"></div>
+        </div>
+        <h3>Items I modified:</h3>
+        <ul>
+          <li>Added a GeoLocate button under the zoom in/out buttons. This will zoom to your location on the map.</li>
+          <li>Added a Scalebar on the bottom left to communicate scale of the current map.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <footer>
+    Debbie Brasier
+    <br/> LA 558 | <a href="../index.html">Web Mapping 2017</a>
+  </footer>
+</body>
+<script>
+  $(document).ready(function() {
+    var map;
+    
+    require([
+      "esri/map", 
+      "esri/dijit/LocateButton",
+      "esri/dijit/Scalebar",
+      "dojo/parser",
+      "dijit/layout/BorderContainer",
+      "dijit/layout/ContentPane",
+      "dojo/domReady!"
+      ], function(
+        Map, LocateButton, Scalebar, parser
+      ) {
+        parser.parse();
+
+      map = new Map("map", {
+        center: [-159.575963,22.222429],
+        zoom: 15,
+        basemap: "streets"
+      });
+            
+      geoLocate = new LocateButton({
+        map: map
+      }, "LocateButton");
+      geoLocate.startup();
+      
+      var scalebar = new Scalebar({
+        map: map,
+        scalebarUnit: "dual"
+      });
+
+    });
+  })
+
+</script>
+
+</html>
