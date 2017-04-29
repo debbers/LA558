@@ -25,6 +25,8 @@
   
   <script src="../data/sexoffenders.js"></script>
   <script src="../data/chicagoPoliceStations.js"></script>
+  <script src="../data/chicagoLStations.js"></script>
+  <script src="../data/chicagoBusStations.js"></script>
   <title>Debbie Brasier - Final Project</title>
 </head>
 
@@ -47,7 +49,6 @@
         <p>Map of historical crimes in Chicago, in order to show riskiest areas, in combination with neighborhoods and transit information.</p>
         <div class="row">
           <div class="col-md-4 col-sm-12 col-xs-12">
-            <div class="panel panel-primary">
              
             <div id="neighborhoodPanel">
               <div class="panel panel-primary">
@@ -62,7 +63,8 @@
                 </div>
               </div>
             </div>
-             
+            
+            <div class="panel panel-primary">
               <div class="panel-heading">Crimes 2001 to present</div>
               <div class="panel-body">
                 <div class="form-group">
@@ -143,9 +145,9 @@
       layers: [CartoDB_Positron]
     });
     
+    // Sex offenders layers for markers, clusters and heat map
     var markers = L.markerClusterGroup();
     var singleMarkers = L.layerGroup([]);
-
     for (var i = 0; i < sexOffenderPoints.length; i++) {
       var a = sexOffenderPoints[i];
       var title = a[0] + " " + a[1];
@@ -156,12 +158,9 @@
       markers.addLayer(marker);
       singleMarkers.addLayer(marker);
     }
-    
-    // Heat map code
     var myArray = [];
     var max = 100;
     var min = 1;
-    
     for (var i = 0; i < sexOffenderPoints.length; i++) {
       var a = sexOffenderPoints[i];
       var x = a[12];
@@ -183,6 +182,7 @@
       }
     });
     
+    // Neighborhoods layer
     $('#neighborhoods').select2();
     function alphabetizeNeighborhoods() {
         var options = $('select#neighborhoods option');
@@ -201,7 +201,6 @@
             $(o).text(arr[i].t);
         });
     }
-    
     neighborhoods = "https://debbers.github.io/LA558/data/chicagoNeighborhoods.geojson";
     var neighborhoodStyle = {
       "color": "#3F51B5",
@@ -221,20 +220,21 @@
       style: neighborhoodStyle,
       onEachFeature: function (feature, layer) {
             htmlText = feature.properties.community;
-            layer.bindPopup(htmlText);
+            layer.bindPopup(htmlText + " Neighborhood");
+            layer.bindTooltip(htmlText);
             $('#neighborhoods').append("<option id=" + feature.properties.objectid + ">" + feature.properties.community + "</option>");
             alphabetizeNeighborhoods();
-            // Identify the id - temporary
-            layer.on('click', function (e) {
-              console.log(e.target.feature.properties.objectid);
-            });
+//            Identify the id - temporary
+//            layer.on('click', function (e) {
+//              console.log(e.target.feature.properties.objectid);
+//            });
         }
     }).addTo(map);
     function onEachFeature(feature, layer){
       polygons[feature.properties.community] = layer;
     }
     
-    
+    // Police station layer
     var policeIcon = L.AwesomeMarkers.icon({
       prefix: 'fa',
       markerColor: 'blue',
@@ -251,8 +251,63 @@
       policeMarkers.addLayer(marker);
     }
     
+    // Bus station layer
+    var busIcon = L.AwesomeMarkers.icon({
+      prefix: 'fa',
+      markerColor: 'orange',
+      icon: 'fa-bus'
+    });
+    var busMarkers = L.markerClusterGroup();
+    for (var i = 0; i < busStations.length; i++) {
+      var a = busStations[i];
+      var title = a[0];
+      popupContent = busStations[i][0] + " Bus Station";
+      marker = new L.marker([busStations[i][1],busStations[i][2]], {
+        icon: busIcon,
+        title: busStations[i][0] + " Bus Station",
+      })
+      .bindPopup(popupContent)
+      busMarkers.addLayer(marker);
+    }
+    var myBusArray = [];
+    var maxBus = 100;
+    var minBus = 1;
+    for (var i = 0; i < busStations.length; i++) {
+      var a = busStations[i];
+      var x = a[1];
+      var y = a[2];
+      z = Math.floor(Math.random() * (maxBus - minBus + 1)) + minBus;
+      myBusArray.push([x, y, z]);
+    }
     
-    
+    // "L" station layer
+    var lIcon = L.AwesomeMarkers.icon({
+      prefix: 'fa',
+      markerColor: 'green',
+      icon: 'fa-subway'
+    });
+    var lMarkers = L.markerClusterGroup([]);
+    for (var i = 0; i < lStations.length; i++) {
+      var a = lStations[i];
+      var title = a[0];
+      popupContent = lStations[i][0] + " 'L' Station";
+      marker = new L.marker([lStations[i][1],lStations[i][2]], {
+        icon: lIcon,
+        title: lStations[i][0] + " 'L' Station",
+      })
+      .bindPopup(popupContent)
+      lMarkers.addLayer(marker);
+    }
+    var myLArray = [];
+    var maxL = 100;
+    var minL = 1;
+    for (var i = 0; i < lStations.length; i++) {
+      var a = lStations[i];
+      var x = a[1];
+      var y = a[2];
+      z = Math.floor(Math.random() * (maxL - minL + 1)) + minL;
+      myLArray.push([x, y, z]);
+    }
     
     
     
@@ -264,11 +319,14 @@
     var overlayMaps = {
       "Neighborhoods": neighborhoodLayer,
       "Police stations": policeMarkers,
+      "Bus stops": busMarkers,
+      "'L' stations": lMarkers,
       "All sex offenders": singleMarkers,
       "Clusters of sex offenders": markers,
       "Heat map of sex offenders": heatMap,
-
     };
+    
+    // Turns neighborhoods panel off/on based on the layer control in the map
     map.on('layerremove', function(event) {
       if(event.layer == neighborhoodLayer) {
         $('#neighborhoodPanel').hide();
@@ -279,7 +337,6 @@
         $("#neighborhoods").val("ALL");
       }
     });
-
     map.on('layeradd', function(event) {
       if(event.layer == neighborhoodLayer) {
         $('#neighborhoodPanel').show();
@@ -288,22 +345,18 @@
 
     L.control.layers(baseMaps, overlayMaps).addTo(map);
     
+    // Style the selected neighborhood shape differently and zoom in on it
     $("#neighborhoods").change(function() {
       var n = $("#neighborhoods").val();
-      //console.log(n);
       if (n == "ALL") {
         map.setView([41.8400427,-87.7314751],10);
       }
-      //highlight current selection
       neighborhoodLayer.eachLayer(function (layer) {
         if(layer.feature.properties.community == n) {
           layer.setStyle(neighborhoodStyleHighlight)
           //https://gis.stackexchange.com/questions/36855/auto-zoom-on-multipolygon-with-leaflet
           if ( layer.feature.geometry.type === "MultiPolygon" ) {
-            // get the bounds for the first polygon that makes up the multipolygon
             var bounds = layer.getBounds();
-            // loop through coordinates array
-            // skip first element as the bounds var represents the bounds for that element
             for ( var i = 1, il = layer.feature.geometry.coordinates[0].length; i < il; i++ ) {
               var ring = layer.feature.geometry.coordinates[0][i];
               var latLngs = ring.map(function(pair) {
