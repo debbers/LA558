@@ -27,6 +27,7 @@
   <script src="../data/chicagoPoliceStations.js"></script>
   <script src="../data/chicagoLStations.js"></script>
   <script src="../data/chicagoBusStations.js"></script>
+  <!--script src="../data/chicagoCrimes.json"></script-->
   <title>Debbie Brasier - Final Project</title>
 </head>
 
@@ -65,29 +66,14 @@
             </div>
             
             <div class="panel panel-primary">
-              <div class="panel-heading">Crimes 2001 to present</div>
+              <div class="panel-heading">Crimes: 2001 to present</div>
               <div class="panel-body">
                 <div class="form-group">
-                  <label for="sexOffenderGender">Filter by year</label><br/>
-                  <select class="form-control" id="sexOffenderGender">
-                    <option value="ALL" selected>* All years *</option>
+                  <label for="selectYear">Filter by year</label><br/>
+                  <select class="form-control" id="selectYear">
+                    <option value="" selected></option>
                     <option value="2017">2017</option>
                     <option value="2016">2016</option>
-                    <option value="2015">2015</option>
-                    <option value="2014">2014</option>
-                    <option value="2013">2013</option>
-                    <option value="2012">2012</option>
-                    <option value="2011">2011</option>
-                    <option value="2010">2010</option>
-                    <option value="2009">2009</option>
-                    <option value="2008">2008</option>
-                    <option value="2007">2007</option>
-                    <option value="2006">2006</option>
-                    <option value="2005">2005</option>
-                    <option value="2004">2004</option>
-                    <option value="2003">2003</option>
-                    <option value="2002">2002</option>
-                    <option value="2001">2001</option>
                   </select>
                 </div>
               </div>
@@ -294,8 +280,57 @@
       myLArray.push([x, y, z]);
     }
     
+    // Get crime data
+    var selectYear = '';
+    $("#selectYear").change(function() {
+      selectYear = $("#selectYear").val();
+      console.log(selectYear)
+      
+      $.ajax({
+        url: "https://data.cityofchicago.org/resource/6zsd-86xi.geojson?$where=year='2017'",
+        type: "GET",
+        data: {
+          "$limit" : 5,
+          "$$app_token" : "JnGYSnldJ1QyotTFvpViGOwSU"
+        }
+      }).done(function(data) {
+        console.log(data);
+        $.each(data.features, function(key,value) {
+          console.log(key);
+          console.log(data.features[key].properties.case_number);
+//          if (key == "features") {
+//              console.log("yay");
+//              }
+          //console.log( key + ": " + value );
+//          $.each(i, function(j, feature) {
+//            console.log(j);
+//          });
+        });
+      });
+    });
     
     
+    
+    // Crimes with arrests
+//    $.ajax({
+//    url: "https://data.cityofchicago.org/resource/3uz7-d32j.geojson?$where=arrest='Y'",
+//    type: "GET",
+//    data: {
+//      "$limit" : 500000,
+//      "$$app_token" : "JnGYSnldJ1QyotTFvpViGOwSU"
+//    }
+//    }).done(function(data) {
+//      console.log(data);
+//      var geojsonLayer = new L.GeoJSON.AJAX(data , {
+//      style: style,
+//      onEachFeature: function (feature, layer) {
+//            htmlText = "<strong>" + feature.properties.NAME+ "</strong><br>Census area: " + feature.properties.CENSUSAREA;
+//            layer.bindPopup(htmlText);
+//        layer.bindTooltip(feature.properties.NAME);
+//        }
+//    }).addTo(map);
+
+//    });
 
     var baseMaps = {
       "Basic Map": CartoDB_Positron,
@@ -361,7 +396,6 @@
         }
       });
     });
-
 })
 
 </script>
