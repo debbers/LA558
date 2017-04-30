@@ -93,27 +93,6 @@
               </div>
             </div>
             
-            <div class="panel panel-primary">
-              <div class="panel-heading">Sex Offenders</div>
-              <div class="panel-body">
-                <div class="form-group">
-                  <label for="sexOffenderGender">Filter by gender</label><br/>
-                  <select class="form-control" id="sexOffenderGender">
-                    <option value="ALL" selected>* All genders *</option>
-                    <option value="MALE">Male</option>
-                    <option value="FEMALE">Female</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="sexOffenderVictim">Filter by victim type</label><br/>
-                  <select class="form-control" id="sexOffenderVictim">
-                    <option value="ALL" selected>* All victims *</option>
-                    <option value="Y">Minor</option>
-                    <option value="N">Adult</option>
-                  </select>
-                </div>
-              </div>
-            </div>
           </div>
           <div class="col-md-8 col-sm-12 col-xs-12">
             <div id="map"></div>
@@ -146,12 +125,18 @@
     });
     
     // Sex offenders layers for markers, clusters and heat map
+    var soIcon = L.AwesomeMarkers.icon({
+      prefix: 'fa',
+      markerColor: 'red',
+      icon: 'fa-user-secret'
+    });
     var markers = L.markerClusterGroup();
     var singleMarkers = L.layerGroup([]);
     for (var i = 0; i < sexOffenderPoints.length; i++) {
       var a = sexOffenderPoints[i];
       var title = a[0] + " " + a[1];
       var marker = L.marker(new L.LatLng(a[12], a[13]), {
+        icon: soIcon,
         title: title
       });
       marker.bindPopup(title);
