@@ -93,7 +93,9 @@
                 </div>
               </div>
             </div>
-            
+            <div id="waiting">
+              <h4 class="text-danger"><i class="fa fa-spinner fa-spin"></i> Updating map. Please be patient.</h4>
+            </div>
           </div>
           <div class="col-md-8 col-sm-12 col-xs-12">
             <div id="map"></div>
@@ -109,6 +111,7 @@
 </body>
 <script>
   $(document).ready(function() {
+    $("#waiting").addClass("hide");
     latlng = L.latLng(41.8400427,-87.7314751);
     var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
         maxZoom: 18,
@@ -299,54 +302,55 @@
     var selectYear = '';
     $("#selectYear").change(function() {
       selectYear = $("#selectYear").val();
-      //console.log(selectYear)
+      $("#waiting").removeClass("hide");
       
       $.ajax({
-        url: "https://data.cityofchicago.org/resource/6zsd-86xi.geojson?$where=year='" + selectYear +"'",
+        url: "https://data.cityofchicago.org/resource/6zsd-86xi.json?$where=year='" + selectYear +"'",
+        //url: "https://data.cityofchicago.org/resource/6zsd-86xi.geojson?$where=latitude>0",
         type: "GET",
         data: {
-          "$limit" : 500,
+          "$limit" : 5000,
           "$$app_token" : "JnGYSnldJ1QyotTFvpViGOwSU"
         }
       }).done(function(data) {
-        console.log(data);
+        //console.log(data);
         var crimeIcon = L.AwesomeMarkers.icon({
             prefix: 'fa',
             markerColor: 'darkred',
             icon: 'fa-user-secret'
           });
         var cMarkers = L.markerClusterGroup([]);
-        $.each(data.features, function(i,value) {
-          console.log(i);
-          //console.log(data.features[i].properties.case_number);
-          var title = data.features[i].properties.primary_type;
-          var lat = data.features[i].properties.latitudee;
-          var lon = data.features[i].properties.longitude;
-          
+        $.each(data, function(i,value) {
+          //console.log(i);
+          var title = data[i].primary_type + ": " + data[i].description;
+          var popupContent = "<strong>" + data[i].primary_type + ": " + data[i].description + "</strong><br/>";
+          popupContent = popupContent + data[i].block + "<br/>";
+          popupContent = popupContent + data[i].date + "<br/>";
+          if (data[i].arrest == true) {
+            popupContent = popupContent + "<i class='fa fa-check-circle text-success'></i> Arrest was made.";
+          } else {
+            popupContent = popupContent + "<i class='fa fa-times-circle text-danger'></i> No arrest was made.";
+          }
+          var lat = data[i].latitude;
+          var lon = data[i].longitude;
+          var myCArray = [];
+          var maxC = 100;
+          var minC = 1;
           if (lat) {
-            console.log("lat");
+            //console.log("lat: " + lat + " lon: " + lon);
             marker = new L.marker([lat,lon], {
               icon:crimeIcon,
               title: title,
             })
-            .bindPopup(title)
+            .bindPopup(popupContent);
+            //.addTo(map);
             cMarkers.addLayer(marker);
-          } else {
-            console.log("no lat");
+            z = Math.floor(Math.random() * (maxC - minC + 1)) + minC;
+            myCArray.push([lat, lon, z]);
           }
-          
-//          var myLArray = [];
-//          var maxL = 100;
-//          var minL = 1;
-//          for (var i = 0; i < lStations.length; i++) {
-//            var a = lStations[i];
-//            var x = a[1];
-//            var y = a[2];
-//            z = Math.floor(Math.random() * (maxL - minL + 1)) + minL;
-//            myLArray.push([x, y, z]);
-//          }
-          
         });
+        $("#waiting").addClass("hide");
+        cMarkers.addTo(map);
       });
     });
 
