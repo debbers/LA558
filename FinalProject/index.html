@@ -31,27 +31,30 @@
   <section>
     <div class="row">
       <div class="col-md-8 col-sm-12 col-xs-12">
-        <h1>Chicago Crime Tracker</h1>
+        <h1><img src="../img/crimetracker.png" alt="Crime Tracker" style="max-height: 50px; position: relative; top: -5px;"/> Chicago Crime Tracker</h1>
         
-        <p>My project will primarily map historical crimes in Chicago by using a couple of different sources of data. The first is simply a breakdown of crimes. The second is mapping out the locations of sex offenders, based on data from the sex offender registry.</p>
-        <p>To make this application of the data useful to residents and visitors of Chicago, I will also add layers for police stations, fire stations, parks and important transit stops. This will help people to better understand the risks of waiting for the bus or “L” in certain locations of Chicago.</p>
+        <h2><a href="../docs/FinalProject.pptx"><i class="fa fa-file-powerpoint-o"></i> Final Project PowerPoint Deck</a></h2>
+        
+        <p>My project primarily maps historical crimes in Chicago by using a couple of different sources of data. The first is simply a breakdown of crimes. The second is mapping out the locations of sex offenders, based on data from the sex offender registry.</p>
+        <p>To make this application of the data useful to residents and visitors of Chicago, I also added layers for police stations, fire stations, parks and important transit stops. This will help people to better understand the risks of waiting for the bus or “L” in certain locations of Chicago.</p>
         
         <h2>Technology</h2>
         <ul>
+          <li>cityofchicago.org API</li>
           <li>Leaflet</li>
           <li>Leaflet clusters</li>
           <li>Leaflet heatmaps</li>
           <li>Awesome markers</li>
           <li>jQuery</li>
+          <li>Bootstrap</li>
           <li>JSON</li>
           <li>Select2 (typeahead feature for dropdown menus)</li>
         </ul>
         
         <h2>Data sources</h2>
         <p>The City of Chicago provides a lot of data in JSON format on its website, data.cityofchicago.org. The Chicago Transit Authority also provides data on is services at transitchicago.com/data/.</p>
-        <p>I plan to use the following data sets, and potentially add to the list as I continue working on the final project:</p>
         <ul>
-          <li><a href="https://data.cityofchicago.org/Public-Safety/Crimes-One-year-prior-to-present/x2n5-8w5q" target="_blank">Crimes - One year prior to present</a></li>
+          <!--li><a href="https://data.cityofchicago.org/Public-Safety/Crimes-One-year-prior-to-present/x2n5-8w5q" target="_blank">Crimes - One year prior to present</a></li-->
           <li><a href="https://data.cityofchicago.org/Public-Safety/Crimes-2001-to-present-Dashboard/5cd6-ry5g" target="_blank">Crimes - 2001 to present</a></li>
           <li><a href="https://catalog.data.gov/dataset/sex-offenders-938b3" target="_blank">Sex Offenders</a></li>
           <li><a href="https://catalog.data.gov/dataset/police-stations-3a3a8" target="_blank">Police Stations</a></li>
@@ -82,7 +85,7 @@
               <li>The Neighborhoods panel with user controls in it only displays when the neighborhoods layer is turned on in the map.</li>
               <li>While parsing the neighborhoods, I also populate a neighborhoods dropdown menu with the list of neighborhoods. I use jQuery to alphabetize this list.</li>
               <li>Because there are so many neighborhoods, I use a jQuery library called select2 to allow the user to pick from the list or type to filter matches by neighborhood name.</li>
-              <li>When the user selects a particular neighborhood, that neighborhood is highlighted on the map. I also zoom in on the neighborhood that is selected from the dropdown. This was a challenging bit of code, but I think it makes the Crimer Tracker more useful for the user.</li>
+              <li>When the user selects a particular neighborhood, that neighborhood is highlighted on the map. I also zoom in on the neighborhood that is selected from the dropdown. This was a challenging bit of code, but I think it makes the Crime Tracker more useful for the user.</li>
             </ul>
           </li>
           <li>Police Stations, Bus Stops, "L" Stations
@@ -96,7 +99,8 @@
               <li>My browser kept crashing while trying to download the .json file, but I was able to download the 1.49GB .csv file while I left for a few hours to take my kids to see the new <em>Smurfs</em> movie.</li>
               <li>I tried a lot of ways to translate this file to json, but pretty much everything failed. I did another search for alternative data sources and found Crimes - One year prior to present. I contemplated using this data instead because it will still show the concept I am introducing in the project, and could be later enhanced with additional data.</li>
               <li>One last effort was to try to get this working with the API. I worked on this for a really long time, and got it hooked in, and was so excited. Then I realized I wasn't getting latitude or longitude data back with the geojson data call.</li>
-              <li>Next, I switched to the json version of the API.</li>
+              <li>Next, I switched to the json version of the API. I was able to get this to (finally!) work! There were still a few pieces of data that did not have latitude or longitude, so I added a condition to skip adding markers for those.</li>
+              <li>I set the API to bring back 5000 rows of data, which is far from the total. I think I would have to set it at 50,000 to get all of the rows back. I was worried about crashing browsers to view this, so I kept it at 5000. I also added a waiting message for the user while the data loads.</li>
             </ul>
           </li>
         </ol>
@@ -111,9 +115,6 @@
           <div class="panel-footer text-center">
             <a href="crimetracker.html" class="btn btn-primary">Try the Crime Tracker!</a>
           </div>
-        </div>
-        <div class="center">
-          <img src="../img/crimetracker.png" alt="Crime Tracker" class="img-responsive"/>
         </div>
       </div>
     </div>
