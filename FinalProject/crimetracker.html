@@ -306,7 +306,6 @@
       
       $.ajax({
         url: "https://data.cityofchicago.org/resource/6zsd-86xi.json?$where=year='" + selectYear +"'",
-        //url: "https://data.cityofchicago.org/resource/6zsd-86xi.geojson?$where=latitude>0",
         type: "GET",
         data: {
           "$limit" : 5000,
@@ -321,7 +320,6 @@
           });
         var cMarkers = L.markerClusterGroup([]);
         $.each(data, function(i,value) {
-          //console.log(i);
           var title = data[i].primary_type + ": " + data[i].description;
           var popupContent = "<strong>" + data[i].primary_type + ": " + data[i].description + "</strong><br/>";
           popupContent = popupContent + data[i].block + "<br/>";
