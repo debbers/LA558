@@ -1,4 +1,4 @@
-var lStations  = [
+var lStations = [
   ["18th (Pink Line)",41.857908, -87.669147],
   ["35th/Archer (Orange Line)",41.829353, -87.680622],
   ["35th/Archer (Orange Line)",41.829353, -87.680622],
